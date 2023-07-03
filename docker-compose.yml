@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mongodb:
+    build:
+      context: ./mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongodb
+    env_file:
+      - ./backend/.env
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+volumes:
+  mongo_data:

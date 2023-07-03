@@ -1,0 +1,30 @@
+# .gitignore
+
+# Ignore Python build artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Ignore Python distribution artifacts
+dist/
+build/
+*.egg
+*.egg-info/
+
+# Ignore Python environments
+.env
+.venv/
+ENV/
+
+# Ignore Jupyter Notebook
+.ipynb_checkpoints
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore PyCharm settings
+.idea/
+
+# Ignore other files
+.DS_Store

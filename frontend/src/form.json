@@ -1,0 +1,20 @@
+{
+    "id": "(generated automatically by insert_one operation)",
+    "formName": "the name of the form",
+    "formQuestions": [
+      {
+        "id": "(generated automatically by insert_one operation)",
+        "prompt": "The question prompt",
+        "type": "The question type as string. Can be of five types: (text, longText, numeric, dropdown, and checkbox)",
+        "options": "The options of the question. Will be empty if the type is text, longText, or numeric. Otherwise, it will have the options as an array of strings",
+        "answers": [
+          {
+            "id": "uuid",
+            "userId": "user's Id",
+            "username": "user's name (to display, 'response from {username}' in the front-end",
+            "answer": "the answer value"
+          }
+        ]
+      }
+    ]
+  }
