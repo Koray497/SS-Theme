@@ -74,7 +74,7 @@ const FormPanel = () => {
     <Box sx={{ maxWidth: 600, margin: "0 auto", marginTop: "5rem" }}>
       {/* Form creation page */}
       <Typography variant="h4" sx={{ marginBottom: "1rem" }}>
-        Create Form
+        Create Theme
       </Typography>
       <form onSubmit={handleSubmit}>
         <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
@@ -83,7 +83,7 @@ const FormPanel = () => {
             value={formName}
             onChange={(e) => setFormName(e.target.value)}
             required
-            label="Form Name"
+            label="Theme Name"
             fullWidth
             margin="normal"
           />
@@ -103,7 +103,7 @@ const FormPanel = () => {
           type="submit"
           sx={{ marginTop: "1rem" }}
         >
-          Save Form
+          Save Theme
         </Button>
       </form>
     </Box>

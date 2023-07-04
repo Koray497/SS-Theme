@@ -18,7 +18,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <img src="logo.png" alt="Logo" className="logo" />
-      <h1 className="app-name">SS-Forms</h1>
+      <h1 className="app-name">SS-Theme</h1>
       <div className="nav-links">
         <Link to="/" className="home-link">
           Home
@@ -30,12 +30,12 @@ function Navbar() {
         )}
         {username && isAdmin && (
           <Link to={"/formpanel"} className="panel-link">
-            Form Panel
+            Theme Panel
           </Link>
         )}
         {username && isAdmin && (
           <Link to={"/editform"} className="panel-link">
-            Edit Forms
+            Edit Themes
           </Link>
         )}
         {username && isAdmin && (

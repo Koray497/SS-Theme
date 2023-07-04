@@ -2,7 +2,7 @@ const Home = () => {
   
   return (
     <div className="container">
-      <h1>Welcome to the SS-Forms</h1>
+      <h1>Welcome to the SS-Theme</h1>
     </div>
   );
 };

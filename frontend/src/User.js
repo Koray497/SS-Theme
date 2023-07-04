@@ -62,15 +62,35 @@ const User = () => {
     setAnswers(
       questionArr.map((question) => ({
         question: question.prompt,
-        answer: handleExistingAnswer(question),
+        answer: handleExistingAnswer(question) || getInitialAnswer(question),
         questionId: question.id,
       }))
-    );
+    );    
   };
-
+  const getInitialAnswer = (question) => {
+    switch (question.type) {
+      case 'dropdown':
+      case 'checkbox':
+        return question.options?.[0];
+      default:
+        return '';
+    }
+  };
+  
   const handleExistingAnswer = (question) => {
-    if (!question?.answers) return [];
-    else {
+    if (!question?.answers) {
+      switch (question.type) {
+        case "dropdown":
+          return question.options[0];  // return first option as default
+        case "checkbox":
+          return [...question.options];  // return all options as default
+        case "text":
+        case "longtext":
+        case "numeric":
+        default:
+          return "";  // return empty string as default
+      }
+    } else {
       for (const theAnswer of question.answers) {
         if (theAnswer.username === username) {
           setUpdating(true);
@@ -79,6 +99,7 @@ const User = () => {
       }
     }
   };
+  
 
   const handleAnswerChange = (event, index) => {
     const updatedAnswers = [...answers];
@@ -148,7 +169,7 @@ const User = () => {
             inputProps={{ "aria-label": "Select a form" }}
           >
             <MenuItem value="" disabled>
-              Select a form
+              Select a Theme
             </MenuItem>
             {forms?.map((form) => (
               <MenuItem key={form.formName} value={form.formName}>
