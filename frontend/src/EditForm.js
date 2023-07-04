@@ -35,57 +35,87 @@ const EditForm = () => {
     fetchForms();
   }, []);
 
+  const prepareQuestions = () => {
+    return questions.map((question) => ({
+      ...question,
+      id: uuidv4(),
+    }));
+  };
+
   const fetchForms = async () => {
     const token = localStorage.getItem("token");
-    try {
-      const response = await fetch("http://localhost:5000/api/forms", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const response = await fetch("http://localhost:5000/api/forms", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      const data = await response.json();
-      console.log(data);
+    const data = await response.json();
 
-      if (!response.ok) {
-        console.error(data);
-        toast.error("Failed to fetch forms");
-      } else {
-        setForms(data);
-      }
-    } catch (error) {
-      console.error("Error:", error);
+    if (!response.ok) {
+      console.error(data);
       toast.error("Failed to fetch forms");
+    } else {
+      setForms(data);
     }
   };
 
   const deleteForm = async (formId) => {
     const token = localStorage.getItem("token");
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/forms/${formId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success(data.msg);
-        fetchForms();
-      } else {
-        toast.error(data.msg);
+    const response = await fetch(
+      `http://localhost:5000/api/forms/${formId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
-    } catch (error) {
-      toast.error("There was an error deleting the form");
-      console.error("Error:", error);
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(data.msg);
+      fetchForms();
+    } else {
+      toast.error(data.msg);
+    }
+  };
+
+  const updateForm = async () => {
+    const token = localStorage.getItem("token");
+    const preparedQuestions = prepareQuestions();
+
+    const updatedForm = {
+      ...selectedForm,
+      formQuestions: preparedQuestions,
+    };
+
+    delete updatedForm._id;
+
+    const response = await fetch(
+      `http://localhost:5000/api/forms/${selectedForm.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedForm),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      toast.success(data.msg);
+      fetchForms();
+    } else {
+      toast.error(data.msg);
+      console.error(data);
     }
   };
 
@@ -113,47 +143,7 @@ const EditForm = () => {
       prevQuestions.filter((_, i) => i !== index)
     );
   };
-
-  const updateForm = async () => {
-    const token = localStorage.getItem("token");
-    questions.forEach((question) => {
-      question.id = uuidv4();
-    });
-    const updatedForm = {
-      ...selectedForm,
-      formQuestions: questions,
-    };
-
-    delete updatedForm._id; // Make sure not to include _id in updatedForm
-
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/forms/${selectedForm.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updatedForm),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success(data.msg);
-        fetchForms(); // Update the forms list
-      } else {
-        toast.error(data.msg);
-        console.error(data); // Log server response
-      }
-    } catch (error) {
-      toast.error("There was an error updating the form");
-      console.error("Error:", error);
-    }
-  };
-
+  
   return (
     <CenteredContainer>
       <Typography variant="h5" gutterBottom>

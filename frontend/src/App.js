@@ -1,4 +1,7 @@
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+
 import Admin from "./Admin.js";
 import Home from "./Home.js";
 import User from "./User.js";
@@ -8,8 +11,6 @@ import Register from "./Register.js";
 import FormPanel from "./FormPanel.js";
 import EditForm from "./EditForm.js";
 import Answers from "./Answer";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 
 function AdminRoute() {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
@@ -33,7 +34,7 @@ function AnswerRoute() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <ToastContainer />
       <Navbar />
       <Routes>
@@ -46,7 +47,7 @@ function App() {
         <Route path="/answers" element={<AnswerRoute />} />
         <Route path="/user" element={<User />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

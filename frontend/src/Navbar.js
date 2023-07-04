@@ -2,16 +2,19 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./App.css"; // Importing CSS
 
-function Navbar() {
+const AdminLink = ({ to, className, children }) => {
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+  return isAdmin ? <Link to={to} className={className}>{children}</Link> : null;
+};
+
+const Navbar = () => {
   const navigate = useNavigate();
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   const username = localStorage.getItem("username");
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("isAdmin");
-    localStorage.removeItem("username");
-    localStorage.removeItem("isToastShown");
+    ["token", "isAdmin", "username", "isToastShown"].forEach(item => localStorage.removeItem(item));
     navigate("/");
   };
 
@@ -28,21 +31,15 @@ function Navbar() {
             Panel
           </Link>
         )}
-        {username && isAdmin && (
-          <Link to={"/formpanel"} className="panel-link">
-            Theme Panel
-          </Link>
-        )}
-        {username && isAdmin && (
-          <Link to={"/editform"} className="panel-link">
-            Edit Themes
-          </Link>
-        )}
-        {username && isAdmin && (
-          <Link to={"/answers"} className="panel-link">
-            Answers
-          </Link>
-        )}
+        <AdminLink to={"/formpanel"} className="panel-link">
+          Theme Panel
+        </AdminLink>
+        <AdminLink to={"/editform"} className="panel-link">
+          Edit Themes
+        </AdminLink>
+        <AdminLink to={"/answers"} className="panel-link">
+          Answers
+        </AdminLink>
       </div>
       <div className="right-content">
         {!username && (
@@ -59,8 +56,7 @@ function Navbar() {
         {username && (
           <>
             <div className="user-info">
-              {!isAdmin && `User: ${username}`}
-              {isAdmin && `Admin: ${username}`}
+              {(isAdmin ? "Admin: " : "User: ") + username}
             </div>
             <button onClick={logout} className="logout-btn">
               Logout
@@ -70,6 +66,6 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;

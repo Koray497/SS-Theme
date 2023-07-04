@@ -6,6 +6,13 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const successfulLogin = (username, isAdmin, token) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("isAdmin", isAdmin);
+    localStorage.setItem("username", username);
+    window.location.href = isAdmin ? "/admin" : "/user";
+  };
+
   const handleLogin = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/login", {
@@ -19,34 +26,17 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Successful login
-        const logusername = data.username;
-        const isAdmin = data.isAdmin;
-        const token = data.access_token;
-        localStorage.setItem("token", token);
-        localStorage.setItem("isAdmin", isAdmin);
-        localStorage.setItem("username", logusername);
-        if (isAdmin) {
-          // Redirect to /admin page
-          window.location.href = "/admin";
-        } else {
-          // Redirect to /user page
-          window.location.href = "/user";
-        }
+        successfulLogin(data.username, data.isAdmin, data.access_token);
       } else {
-        // Login failed
         if (response.status === 401) {
-          // Incorrect username or password
           toast.error("Wrong username or password", {
             autoClose: 1000,
           });
         } else {
-          // Other error
           console.error("Login failed:", data.msg);
         }
       }
     } catch (error) {
-      // Error occurred
       console.error("Error:", error);
     }
   };

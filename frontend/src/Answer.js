@@ -55,8 +55,6 @@ const Answers = () => {
   const handleFormChange = (event) => {
     const selectedForm = event.target.value;
     setSelectedForm(selectedForm);
-
-    // Filter questions based on selected form
     const filteredQuestions = answers
       .filter((answer) => answer.formName === selectedForm)
       .map((answer) => answer.question);
@@ -68,8 +66,6 @@ const Answers = () => {
   const handleQuestionChange = (event) => {
     const selectedQuestion = event.target.value;
     setSelectedQuestion(selectedQuestion);
-
-    // Filter usernames based on selected form and question
     const filteredUsernames = answers
       .filter(
         (answer) =>
@@ -133,7 +129,6 @@ const Answers = () => {
             onChange={handleFormChange}
           >
             <MenuItem value="">All</MenuItem>
-            {/* Render options for unique forms */}
             {uniqueForms.map((form) => (
               <MenuItem key={form} value={form}>
                 {form}
@@ -151,7 +146,6 @@ const Answers = () => {
             disabled={!selectedForm}
           >
             <MenuItem value="">All</MenuItem>
-            {/* Render options for unique questions */}
             {uniqueQuestions.map((question) => (
               <MenuItem key={question} value={question}>
                 {question}
@@ -169,7 +163,6 @@ const Answers = () => {
             disabled={!selectedForm || !selectedQuestion}
           >
             <MenuItem value="">All</MenuItem>
-            {/* Render options for unique usernames */}
             {uniqueUsernames.map((username) => (
               <MenuItem key={username} value={username}>
                 {username}

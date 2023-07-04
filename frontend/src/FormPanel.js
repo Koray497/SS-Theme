@@ -6,37 +6,39 @@ import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 
 const FormPanel = () => {
-  // State variables for form data
   const [formName, setFormName] = useState("");
   const [questions, setQuestions] = useState([]);
 
-  // Function to handle adding a question
   const addQuestion = (question) => {
     setQuestions([...questions, question]);
   };
 
-  // Function to handle updating a question
   const updateQuestion = (index, question) => {
     const updatedQuestions = [...questions];
     updatedQuestions[index] = question;
     setQuestions(updatedQuestions);
   };
 
-  // Function to handle deleting a question
   const deleteQuestion = (index) => {
     const updatedQuestions = [...questions];
     updatedQuestions.splice(index, 1);
     setQuestions(updatedQuestions);
   };
 
-  // Function to handle form submission
+  const prepareQuestions = () => {
+    return questions.map((question) => ({
+      ...question,
+      id: uuidv4(),
+      answers: [],
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-    questions.forEach((question) => {
-      question.id = uuidv4();
-      question.answers = [];
-    });
+
+    const preparedQuestions = prepareQuestions();
+
     try {
       const response = await fetch("http://localhost:5000/api/forms", {
         method: "POST",
@@ -46,21 +48,19 @@ const FormPanel = () => {
         },
         body: JSON.stringify({
           formName,
-          formQuestions: questions,
+          formQuestions: preparedQuestions,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Admin user created successfully
         toast.success(data.msg);
         console.log(data);
         setTimeout(() => {
           window.location.href = "/FormPanel";
         }, 1000);
       } else {
-        // Username already exists or other error
         toast.error(data.msg);
         console.error(data);
       }
@@ -72,7 +72,6 @@ const FormPanel = () => {
 
   return (
     <Box sx={{ maxWidth: 600, margin: "0 auto", marginTop: "5rem" }}>
-      {/* Form creation page */}
       <Typography variant="h4" sx={{ marginBottom: "1rem" }}>
         Create Theme
       </Typography>
@@ -89,7 +88,6 @@ const FormPanel = () => {
           />
         </FormControl>
 
-        {/* Question input component */}
         <QuestionInput
           questions={questions}
           handleAddQuestion={addQuestion}

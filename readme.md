@@ -29,7 +29,7 @@ git clone https://github.com/Koray497/SS-Theme
 
 2. Go to the project directory:
 
-cd repo
+cd SS-Theme
 
 3. Build and run the Docker containers:
 
