@@ -19,7 +19,7 @@ const Admin = () => {
 
   const getUsers = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/users/getall", {
+      const response = await fetch("http://localhost:5000/api/users/getusers", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

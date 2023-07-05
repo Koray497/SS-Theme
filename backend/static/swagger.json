@@ -12,12 +12,19 @@
     "servers": [
       {
         "url": "/api/users"
+      },
+      {
+        "url": "/api/forms"
       }
     ],
     "tags": [
       {
         "name": "User Management",
         "description": "API for managing users"
+      },
+      {
+        "name": "Form Management",
+        "description": "API for managing forms"
       }
     ],
     "paths": {
@@ -77,8 +84,8 @@
             }
           }
         }
-    },
-        "/getall":{
+      },
+      "/getusers": {
         "get": {
           "tags": [
             "User Management"
@@ -158,13 +165,162 @@
             }
           }
         }
-      }
-    },
+      },
+      "/create": {
+        "post": {
+          "tags": [
+            "Form Management"
+          ],
+          "summary": "Create a new form",
+          "requestBody": {
+            "description": "Form creation",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Form"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Form created successfully"
+            },
+            "404": {
+              "description": "Form with name already exists"
+            }
+          }
+        }
+      },
+      "/getall": {
+        "get": {
+          "tags": [
+            "Form Management"
+          ],
+          "summary": "Get all forms",
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Forms"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "No forms found"
+            }
+          }
+        }
+      },
+      "/{form_id}": {
+        "post": {
+          "tags": [
+            "Form Management"
+          ],
+          "summary": "Update a form",
+          "parameters": [
+            {
+              "name": "form_id",
+              "in": "path",
+              "description": "ID of the form to update",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Form update data",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Form"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Form updated successfully"
+            }
+          }
+        }
+      },
+      "/delete/{form_id}": {
+        "post": {
+          "tags": [
+            "Form Management"
+          ],
+          "summary": "Delete a form",
+          "parameters": [
+            {
+              "name": "form_id",
+              "in": "path",
+              "description": "ID of the form to delete",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Form deleted successfully"
+            }
+          }
+        }
+      },
+      "/{form_id}/responses": {
+        "post": {
+          "tags": [
+            "Form Management"
+          ],
+          "summary": "Add a response to a form",
+          "parameters": [
+            {
+              "name": "form_id",
+              "in": "path",
+              "description": "ID of the form to respond to",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Response data",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Response added successfully"
+            },
+            "404": {
+              "description": "Form not found"
+            }
+          }
+        }
+      },
     "components": {
       "schemas": {
         "User": {
           "type": "object",
           "properties": {
+            "name": {
+              "type": "string"
+            },
             "username": {
               "type": "string"
             },
@@ -172,10 +328,17 @@
               "type": "string"
             }
           },
-          "required": [
-            "username",
-            "password"
-          ]
+          "example": {
+            "name": "John Doe",
+            "username": "john",
+            "password": "password123"
+          }
+        },
+        "Users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/User"
+          }
         },
         "Login": {
           "type": "object",
@@ -187,43 +350,206 @@
               "type": "string"
             }
           },
-          "required": [
-            "username",
-            "password"
-          ]
+          "example": {
+            "username": "john",
+            "password": "password123"
+          }
         },
         "LoginResponse": {
           "type": "object",
           "properties": {
-            "access_token": {
-              "type": "string"
-            },
-            "isAdmin": {
-              "type": "boolean"
-            },
-            "username": {
+            "token": {
               "type": "string"
             }
+          },
+          "example": {
+            "token": "jwt_token"
           }
         },
-        "Users": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "_id": {
+        "Form": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "questions": {
+              "type": "array",
+              "items": {
                 "type": "string"
-              },
-              "username": {
-                "type": "string"
-              },
-              "isAdmin": {
-                "type": "boolean"
               }
             }
+          },
+          "example": {
+            "title": "Survey Form",
+            "questions": ["Question 1", "Question 2"]
+          }
+        },
+        "Forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Form"
+          }
+        },
+        "Response": {
+          "type": "object",
+          "properties": {
+            "responses": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "example": {
+            "responses": ["Answer 1", "Answer 2"]
+          }
+        },
+        "Responses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/Response"
           }
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "Users": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "isAdmin": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "Form": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "object",
+            "properties": {
+              "$oid": {
+                "type": "string"
+              }
+            }
+          },
+          "formName": {
+            "type": "string"
+          },
+          "formQuestions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "prompt": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "id": {
+                  "type": "string"
+                },
+                "answers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "userId": {
+                        "type": "object",
+                        "properties": {
+                          "$oid": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "username": {
+                        "type": "string"
+                      },
+                      "answer": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "Forms": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Form"
+        }
+      }
+    }
   }
+}
   

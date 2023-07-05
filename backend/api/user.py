@@ -25,7 +25,7 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
     config={
-        'app_name': "Seans-Python-Flask-REST-Boilerplate"
+        'app_name': "SS-Theme Api Test"
     }
 )
 ### end swagger specific ###
@@ -50,7 +50,7 @@ def register():
     else:
         return jsonify({'msg': 'Username already exists'}), 409
 
-@user_blueprint.route('/getall', methods=['GET'])
+@user_blueprint.route('/getusers', methods=['GET'])
 def get_users():
     result = users_collection.find()
     data = [
