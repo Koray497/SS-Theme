@@ -1,10 +1,12 @@
 from jwt import decode, InvalidTokenError, ExpiredSignatureError
 from functools import wraps
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask import current_app
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 from flask import jsonify, request
+
 
 load_dotenv()
 
@@ -14,7 +16,7 @@ users_collection = db['users']
 
 def user_from_request(request):
     token = request.headers.get('Authorization').split()[1]
-    payload = decode(token, app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
+    payload = decode(token, current_app.config['JWT_SECRET_KEY'], algorithms=['HS256'])
     username = payload['sub']
     user_from_db = users_collection.find_one({'username': username})
     return user_from_db
