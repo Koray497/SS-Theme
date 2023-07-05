@@ -1,0 +1,229 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "SS-Theme",
+      "version": "1.0.0",
+      "title": "SS-Theme Api Test",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+        "url": "/api/users"
+      }
+    ],
+    "tags": [
+      {
+        "name": "User Management",
+        "description": "API for managing users"
+      }
+    ],
+    "paths": {
+      "/admin": {
+        "post": {
+          "tags": [
+            "User Management"
+          ],
+          "summary": "Register a new admin user",
+          "requestBody": {
+            "description": "Admin Registration",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Admin user created successfully"
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/register": {
+        "post": {
+          "tags": [
+            "User Management"
+          ],
+          "summary": "Register a new user",
+          "requestBody": {
+            "description": "User Registration",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User created successfully"
+            },
+            "409": {
+              "description": "Username already exists"
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+    },
+        "/getall":{
+        "get": {
+          "tags": [
+            "User Management"
+          ],
+          "summary": "Get all users",
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Users"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "tags": [
+            "User Management"
+          ],
+          "summary": "Log in a user",
+          "requestBody": {
+            "description": "User Login",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Login"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successfully logged in",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "The username or password is incorrect"
+            }
+          }
+        }
+      },
+      "/{username}": {
+        "post": {
+          "tags": [
+            "User Management"
+          ],
+          "summary": "Delete a user",
+          "parameters": [
+            {
+              "name": "username",
+              "in": "path",
+              "description": "Username of the user to delete",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User deleted successfully"
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "User": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "username",
+            "password"
+          ]
+        },
+        "Login": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "username",
+            "password"
+          ]
+        },
+        "LoginResponse": {
+          "type": "object",
+          "properties": {
+            "access_token": {
+              "type": "string"
+            },
+            "isAdmin": {
+              "type": "boolean"
+            },
+            "username": {
+              "type": "string"
+            }
+          }
+        },
+        "Users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "isAdmin": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

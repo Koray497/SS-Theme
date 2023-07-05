@@ -8,6 +8,7 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 import uuid
 from .utils import admin_required, user_from_request
+from flask_swagger_ui import get_swaggerui_blueprint
 
 load_dotenv()
 
@@ -17,6 +18,18 @@ users_collection = db['users']
 
 user_blueprint = Blueprint('user', __name__)
 
+### swagger specific ###
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Seans-Python-Flask-REST-Boilerplate"
+    }
+)
+### end swagger specific ###
+
 @user_blueprint.route('/admin', methods=['POST'])
 def admin_register():
     new_user = request.get_json()
@@ -25,7 +38,7 @@ def admin_register():
     users_collection.insert_one(new_user)
     return jsonify({'msg': 'Admin user created successfully'}), 201
 
-@user_blueprint.route('', methods=['POST'])
+@user_blueprint.route('/register', methods=['POST'])
 def register():
     new_user = request.get_json()
     new_user['password'] = hashlib.sha256(new_user['password'].encode('utf-8')).hexdigest()
@@ -37,7 +50,7 @@ def register():
     else:
         return jsonify({'msg': 'Username already exists'}), 409
 
-@user_blueprint.route('', methods=['GET'])
+@user_blueprint.route('/getall', methods=['GET'])
 def get_users():
     result = users_collection.find()
     data = [
@@ -65,5 +78,4 @@ def delete_user(username):
     if not user:
         return jsonify({'msg': 'User not found'}), 404
     users_collection.delete_one({'username': username})
-    texts_collection.delete_many({'profile': username})
     return jsonify({'msg': 'User deleted successfully'}), 200

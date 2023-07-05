@@ -44,7 +44,7 @@ const EditForm = () => {
 
   const fetchForms = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:5000/api/forms", {
+    const response = await fetch("http://localhost:5000/api/forms/getall", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

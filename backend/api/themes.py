@@ -16,7 +16,7 @@ forms_collection = db['forms']
 
 themes_blueprint = Blueprint('themes', __name__)
 
-@themes_blueprint.route('', methods=['POST'])
+@themes_blueprint.route('/create', methods=['POST'])
 @admin_required
 def create_form():
     form_data = request.get_json()
@@ -29,7 +29,7 @@ def create_form():
         forms_collection.insert_one(form_data)
         return jsonify({'msg': 'Form creation successful'}), 201
 
-@themes_blueprint.route('', methods=['GET'])
+@themes_blueprint.route('/getall', methods=['GET'])
 def get_all_forms():
     forms = forms_collection.find()
     if forms:
