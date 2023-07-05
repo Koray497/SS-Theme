@@ -59,7 +59,7 @@ def login():
             return jsonify(access_token=access_token, isAdmin=user_from_db['isAdmin'], username=user_from_db['username']), 200
     return jsonify({'msg': 'The username or password is incorrect'}), 401
 
-@user_blueprint.route("/<username>", methods=["DELETE"])
+@user_blueprint.route("/<username>", methods=["POST"])
 def delete_user(username):
     user = users_collection.find_one({'username': username})
     if not user:

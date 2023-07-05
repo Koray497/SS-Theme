@@ -37,14 +37,14 @@ def get_all_forms():
         return forms_data, 200, {'Content-Type': 'application/json'}
     return jsonify({'msg': 'No forms found'}), 404
 
-@themes_blueprint.route('/<form_id>', methods=['PUT'])
+@themes_blueprint.route('/<form_id>', methods=['POST'])
 @admin_required
 def update_form(form_id):
     updated_data = request.get_json()
     forms_collection.update_one({'id': form_id}, {'$set': updated_data})
     return jsonify({'msg': 'Form updated successfully'})
 
-@themes_blueprint.route('/<form_id>', methods=['DELETE'])
+@themes_blueprint.route('/delete/<form_id>', methods=['POST'])
 @admin_required
 def delete_form(form_id):
     forms_collection.delete_one({'id': form_id})

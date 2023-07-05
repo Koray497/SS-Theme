@@ -65,9 +65,9 @@ const EditForm = () => {
   const deleteForm = async (formId) => {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:5000/api/forms/${formId}`,
+      `http://localhost:5000/api/forms/delete/${formId}`,
       {
-        method: "DELETE",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ const EditForm = () => {
     const response = await fetch(
       `http://localhost:5000/api/forms/${selectedForm.id}`,
       {
-        method: "PUT",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
