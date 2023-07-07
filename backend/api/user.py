@@ -1,69 +1,85 @@
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
-from pymongo import MongoClient
-from dotenv import load_dotenv
-import os
-import hashlib
-from bson.json_util import dumps
-from bson.objectid import ObjectId
-import uuid
-from .utils import admin_required, user_from_request
-
-load_dotenv()
-
-client = MongoClient(os.getenv('MONGO_CONNECTION_STRING'))
-db = client['user_forms']
-users_collection = db['users']
+import base64
+import re
+from flask import Blueprint, request, jsonify, session
+import ldap
 
 user_blueprint = Blueprint('user', __name__)
 
-@user_blueprint.route('/admin', methods=['POST'])
-def admin_register():
-    new_user = request.get_json()
-    new_user['password'] = hashlib.sha256(new_user['password'].encode('utf-8')).hexdigest()
-    new_user['isAdmin'] = True
-    users_collection.insert_one(new_user)
-    return jsonify({'msg': 'Admin user created successfully'}), 201
+# LDAP configuration
+LDAP_SERVER = 'ldap://localhost:389'
+LDAP_BASE_DN = 'ou=People,dc=sstek,dc=com'
+LDAP_BIND_DN = 'cn=admin,dc=sstek,dc=com'
+LDAP_BIND_PASSWORD = '123'
 
-@user_blueprint.route('', methods=['POST'])
-def register():
-    new_user = request.get_json()
-    new_user['password'] = hashlib.sha256(new_user['password'].encode('utf-8')).hexdigest()
-    new_user['isAdmin'] = False
-    doc = users_collection.find_one({'username': new_user['username']})
-    if not doc:
-        users_collection.insert_one(new_user)
-        return jsonify({'msg': 'User created successfully'}), 201
-    else:
-        return jsonify({'msg': 'Username already exists'}), 409
 
-@user_blueprint.route('', methods=['GET'])
-def get_users():
-    result = users_collection.find()
-    data = [
-        {'_id': str(doc['_id']),
-         'username': doc['username'],
-         'isAdmin': doc.get('isAdmin', False)}
-        for doc in result
-    ]
-    return jsonify(data)
+def extract_ou_from_dn(dn):
+    ou_match = re.search(r'cn=[^,]+,ou=([^,]+)', dn)
+    if ou_match:
+        return ou_match.group(1)
+    return None
 
-@user_blueprint.route("/login", methods=["POST"])
+def ldap_authenticate(username, password):
+    try:
+        # Connect to the LDAP server
+        ldap_connection = ldap.initialize(LDAP_SERVER)
+        ldap_connection.simple_bind_s(LDAP_BIND_DN, LDAP_BIND_PASSWORD)
+        print("LDAP connection successful")
+
+        # Search for the user
+        search_filter = f"(uid={username})"
+        result = ldap_connection.search_s(LDAP_BASE_DN, ldap.SCOPE_SUBTREE, search_filter)
+
+        if result:
+            dn, attributes = result[0]
+
+            # Authenticate the user
+            ldap_connection.simple_bind_s(dn, password)
+            print("User authentication successful")
+
+            # Retrieve specific user data
+            user_data = {
+                'username': str(attributes.get('uid', [b''])[0], 'utf-8'),
+                'email': str(attributes.get('mail', [b''])[0], 'utf-8'),
+                'full_name': str(attributes.get('cn', [b''])[0], 'utf-8'),
+                'ou': extract_ou_from_dn(dn)
+                # Add more attributes as needed
+            }
+
+            # Convert bytes to base64-encoded strings
+            for key, value in user_data.items():
+                if isinstance(value, bytes):
+                    user_data[key] = base64.b64encode(value).decode('utf-8')
+
+            return user_data
+
+        print("User not found in LDAP directory")
+        return None
+    except ldap.LDAPError as e:
+        print(f"LDAP Error: {e}")
+        return None
+
+@user_blueprint.route('/login', methods=['POST'])
 def login():
-    login_details = request.get_json()
-    user_from_db = users_collection.find_one({'username': login_details['username']})
-    if user_from_db:
-        encrpted_password = hashlib.sha256(login_details['password'].encode("utf-8")).hexdigest()
-        if encrpted_password == user_from_db['password']:
-            access_token = create_access_token(identity=user_from_db['username'])
-            return jsonify(access_token=access_token, isAdmin=user_from_db['isAdmin'], username=user_from_db['username']), 200
-    return jsonify({'msg': 'The username or password is incorrect'}), 401
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
 
-@user_blueprint.route("/<username>", methods=["POST"])
-def delete_user(username):
-    user = users_collection.find_one({'username': username})
-    if not user:
-        return jsonify({'msg': 'User not found'}), 404
-    users_collection.delete_one({'username': username})
-    texts_collection.delete_many({'profile': username})
-    return jsonify({'msg': 'User deleted successfully'}), 200
+    if username and password:
+        user_data = ldap_authenticate(username, password)
+        if user_data:
+            # Store user data in the session
+            session['user_data'] = user_data
+            return jsonify({'message': 'Authentication successful', 'user_data': user_data})
+        else:
+            return jsonify({'message': 'Authentication failed'})
+    else:
+        return jsonify({'message': 'Invalid request'}), 400
+
+@user_blueprint.route('/protected_resource')
+def protected_resource():
+    # Retrieve user data from the session
+    user_data = session.get('user_data')
+    if user_data:
+        return jsonify({'message': 'Access granted', 'user_data': user_data})
+    else:
+        return jsonify({'message': 'Access denied'})
