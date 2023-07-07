@@ -6,7 +6,7 @@ import ldap
 user_blueprint = Blueprint('user', __name__)
 
 # LDAP configuration
-LDAP_SERVER = 'ldap://localhost:389'
+LDAP_SERVER = 'ldap://192.168.1.66:389'
 LDAP_BASE_DN = 'ou=People,dc=sstek,dc=com'
 LDAP_BIND_DN = 'cn=admin,dc=sstek,dc=com'
 LDAP_BIND_PASSWORD = '123'
