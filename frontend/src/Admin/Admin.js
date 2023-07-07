@@ -27,8 +27,6 @@ const Admin = () => {
         <li><span role="button" onClick={() => setActiveTab("UserActivities")} >User Activities</span></li>
         <li><span role="button" onClick={() => setActiveTab("Answers")} >Answer Management</span></li>
         <li><span role="button" onClick={() => setActiveTab("DataExport")} >Data Export</span></li>
-        <li><span role="button" onClick={() => setActiveTab("Settings")} >Settings</span></li>
-
         </ul>
       </div>
       <div className="active-tab">
