@@ -44,7 +44,7 @@ const Login = () => {
   return (
     <div className="container">
       <h1>Login</h1>
-      <div className="login-container">
+      <div className="form-container">
         <input
           type="text"
           placeholder="Username"

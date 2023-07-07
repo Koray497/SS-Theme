@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, MenuItem, Typography, Select } from "@mui/material";
 import { styled } from "@mui/system";
 import { toast } from "react-toastify";
-import QuestionInput from "./QuestionInput";
+import QuestionInput from "../QuestionInput";
 import { v4 as uuidv4 } from "uuid";
 
 const CenteredContainer = styled("div")({
@@ -167,6 +167,7 @@ const EditForm = () => {
             ))}
           </Select>
           <Button
+            className="add-form"
             variant="outlined"
             onClick={() => deleteForm(selectedForm.id)}
             size="small"
@@ -176,20 +177,24 @@ const EditForm = () => {
           </Button>
         </FormListItem>
       </FormList>
+      <div>
       <QuestionInput
         questions={questions}
         handleAddQuestion={addQuestion}
         handleUpdateQuestion={updateQuestion}
         handleDeleteQuestion={deleteQuestion}
       />
-      <Button
-        variant="contained"
-        sx={{ marginTop: "1rem" }}
-        fullWidth
-        onClick={updateForm}
-      >
-        Save Form
-      </Button>
+  <Button
+    className="add-form"
+    disabled={questions.length < 1}
+    variant="contained"
+    type="submit"
+    sx={{ marginTop: "1rem" }}
+    onClick={updateForm}
+  >
+    Update Form
+  </Button>
+  </div>
     </CenteredContainer>
   );
 };

@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    position:fixed;
+    left:0;
+    width:250px;
+    height:100%;
+    background:#042331;
+    list-style: none;
+    text-decoration: none;
+  }
+  
+  .active-tab {
+    flex-grow: 1;
+    padding: 20px;
+  }
+
+  .sidebar ul li {
+    display:block;
+    height:100%;
+    width:100%;
+    font-size:20px;
+  }
+  .sidebar ul span{
+    width:200px;
+    display:block;
+    height:100%;
+    font-size:20px;
+    color:white;
+    padding-left:40px;
+    box-sizing: border-box;
+    border-top: 1px solid rgba(255,255,255,.1);
+    border-bottom: 1px solid black;
+    transition: .4s;
+    margin-bottom:10px;
+    background:#06425e;
+  }
+
+  .sidebar ul span:hover{
+    cursor:pointer;
+    padding-left:50px;
+  }

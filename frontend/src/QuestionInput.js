@@ -135,6 +135,7 @@ const QuestionInput = ({
                   fullWidth
                 />
                 <Button
+                  className="add-form"
                   variant="outlined"
                   size="small"
                   onClick={() => deleteOption(index)}
@@ -152,6 +153,7 @@ const QuestionInput = ({
             margin="normal"
           />
           <Button
+            className="add-form"
             variant="outlined"
             size="small"
             onClick={addOption}
@@ -163,7 +165,7 @@ const QuestionInput = ({
       )}
       {editingIndex !== -1 ? (
         <div>
-          <Button variant="contained" onClick={updateQuestion}>
+          <Button className="add-form" variant="contained" onClick={updateQuestion}>
             Update Form
           </Button>
           <Button variant="outlined" onClick={cancelEdit}>
@@ -172,6 +174,7 @@ const QuestionInput = ({
         </div>
       ) : (
         <Button
+          className="add-form"
           variant="contained"
           onClick={addQuestion}
           disabled={promptInput.trim() === ""}
@@ -208,10 +211,11 @@ const QuestionInput = ({
               </OptionsList>
             </div>
           )}
-          <Button variant="outlined" onClick={() => editQuestion(index)}>
+          <Button className="add-form" variant="outlined" onClick={() => editQuestion(index)}>
             Edit
           </Button>
           <Button
+            className="add-form"
             variant="outlined"
             onClick={() => deleteQuestion(index)}
             size="small"

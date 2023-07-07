@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, FormControl, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import QuestionInput from "./QuestionInput";
+import QuestionInput from "../QuestionInput";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 
@@ -96,6 +96,7 @@ const FormPanel = () => {
         />
 
         <Button
+          className="add-form"
           disabled={questions.length < 1}
           variant="contained"
           type="submit"

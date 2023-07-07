@@ -1,0 +1,71 @@
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #282c34;
+    color: white;
+  }
+  
+  .navbar .logo {
+    height: 40px;
+    width: 40px;
+    margin-right: 20px; /* Adjust the right margin to control space between logo and app name */
+  }
+  
+  .navbar .app-name {
+    margin-right: 100px; /* Adjust the right margin to control space between app name and nav-links */
+  }
+  
+  .navbar .nav-links {
+    display: flex;
+  }
+  
+  .navbar .nav-links a {
+    color: #61dafb;
+    text-decoration: none;
+    margin-right: 80px; /* Adjust the right margin to control space between the links */
+  }
+  
+  .navbar .nav-links a:hover {
+    color: #1a94b6;
+    text-decoration: none;
+    margin-right: 80px; /* Adjust the right margin to control space between the links */
+  }
+  
+  .navbar .right-content {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* This pushes the right-content to the right */
+    gap: 20px;
+  }
+  
+  .navbar .user-info {
+    color: #fff;
+  }
+  
+  .logout-btn {
+    width: 300px;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .logout-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .home-link {
+    color:  #61dafb;
+    text-decoration: none;
+    margin-right: 80px; /* Adjust the right margin to control space between the links */
+  }
+  
+  .home-link:hover {
+    color: #1a94b6;
+    text-decoration: none;
+    margin-right: 80px; /* Adjust the right margin to control space between the links */
+  }

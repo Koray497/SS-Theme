@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./App.css"; // Importing CSS
+import "./css/App.css";
+import './css/Navbar.css';
+
 
 const AdminLink = ({ to, className, children }) => {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
@@ -36,9 +38,6 @@ const Navbar = () => {
         </AdminLink>
         <AdminLink to={"/editform"} className="panel-link">
           Edit Forms
-        </AdminLink>
-        <AdminLink to={"/answers"} className="panel-link">
-          Answers
         </AdminLink>
       </div>
       <div className="right-content">
