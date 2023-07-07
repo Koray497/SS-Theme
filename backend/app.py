@@ -11,6 +11,7 @@ from api.forms import forms_blueprint
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 CORS(app)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
