@@ -14,9 +14,9 @@ client = MongoClient(os.getenv('MONGO_CONNECTION_STRING'))
 db = client['user_forms']
 forms_collection = db['forms']
 
-themes_blueprint = Blueprint('themes', __name__)
+forms_blueprint = Blueprint('forms', __name__)
 
-@themes_blueprint.route('/create', methods=['POST'])
+@forms_blueprint.route('/create', methods=['POST'])
 @admin_required
 def create_form():
     form_data = request.get_json()
@@ -29,7 +29,7 @@ def create_form():
         forms_collection.insert_one(form_data)
         return jsonify({'msg': 'Form creation successful'}), 201
 
-@themes_blueprint.route('/getall', methods=['GET'])
+@forms_blueprint.route('/getall', methods=['GET'])
 def get_all_forms():
     forms = forms_collection.find()
     if forms:
@@ -37,20 +37,20 @@ def get_all_forms():
         return forms_data, 200, {'Content-Type': 'application/json'}
     return jsonify({'msg': 'No forms found'}), 404
 
-@themes_blueprint.route('/<form_id>', methods=['POST'])
+@forms_blueprint.route('/<form_id>', methods=['POST'])
 @admin_required
 def update_form(form_id):
     updated_data = request.get_json()
     forms_collection.update_one({'id': form_id}, {'$set': updated_data})
     return jsonify({'msg': 'Form updated successfully'})
 
-@themes_blueprint.route('/delete/<form_id>', methods=['POST'])
+@forms_blueprint.route('/delete/<form_id>', methods=['POST'])
 @admin_required
 def delete_form(form_id):
     forms_collection.delete_one({'id': form_id})
     return jsonify({'msg': 'Form deleted successfully'})
 
-@themes_blueprint.route('/<form_id>/responses', methods=['POST'])
+@forms_blueprint.route('/<form_id>/responses', methods=['POST'])
 @jwt_required()
 def add_response(form_id):
     response_data = request.get_json()

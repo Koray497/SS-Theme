@@ -32,10 +32,10 @@ const Navbar = () => {
           </Link>
         )}
         <AdminLink to={"/formpanel"} className="panel-link">
-          Theme Panel
+          Form Panel
         </AdminLink>
         <AdminLink to={"/editform"} className="panel-link">
-          Edit Themes
+          Edit Forms
         </AdminLink>
         <AdminLink to={"/answers"} className="panel-link">
           Answers

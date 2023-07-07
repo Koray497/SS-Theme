@@ -146,7 +146,7 @@ const User = () => {
       <form onSubmit={handleSubmit}>
         <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
           <Select value={selectedForm.formName || ""} onChange={handleFormChange} displayEmpty inputProps={{ "aria-label": "Select a form" }}>
-            <MenuItem value="" disabled>Select a Theme</MenuItem>
+            <MenuItem value="" disabled>Select a Form</MenuItem>
             {forms?.map((form) => (
               <MenuItem key={form.formName} value={form.formName}>{form.formName}</MenuItem>
             ))}

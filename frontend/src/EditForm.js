@@ -147,7 +147,7 @@ const EditForm = () => {
   return (
     <CenteredContainer>
       <Typography variant="h5" gutterBottom>
-        Edit Themes
+        Edit Forms
       </Typography>
       <FormList>
         <FormListItem>
@@ -158,7 +158,7 @@ const EditForm = () => {
             inputProps={{ "aria-label": "Select a form" }}
           >
             <MenuItem value="" disabled>
-              Select a Theme
+              Select a Form
             </MenuItem>
             {forms.map((form) => (
               <MenuItem key={form.id} value={form.id}>
@@ -188,7 +188,7 @@ const EditForm = () => {
         fullWidth
         onClick={updateForm}
       >
-        Save Theme
+        Save Form
       </Button>
     </CenteredContainer>
   );

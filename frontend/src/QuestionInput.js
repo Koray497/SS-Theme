@@ -96,7 +96,7 @@ const QuestionInput = ({
     <div>
       {/* Question input */}
       <Typography variant="h5" gutterBottom>
-        {editingIndex !== -1 ? "Edit Theme" : "Add/Edit Theme"}
+        {editingIndex !== -1 ? "Edit Form" : "Add/Edit Form"}
       </Typography>
       <TextField
         label="Prompt"
@@ -164,7 +164,7 @@ const QuestionInput = ({
       {editingIndex !== -1 ? (
         <div>
           <Button variant="contained" onClick={updateQuestion}>
-            Update Theme
+            Update Form
           </Button>
           <Button variant="outlined" onClick={cancelEdit}>
             Cancel
@@ -176,7 +176,7 @@ const QuestionInput = ({
           onClick={addQuestion}
           disabled={promptInput.trim() === ""}
         >
-          Add Theme
+          Add Form
         </Button>
       )}
 

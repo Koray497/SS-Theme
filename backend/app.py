@@ -1,13 +1,12 @@
-from flask import Flask, current_app  # Don't forget to import current_app
+from flask import Flask, current_app
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 import os
 from pymongo import MongoClient
 import datetime
-
 from api.user import user_blueprint, SWAGGERUI_BLUEPRINT, SWAGGER_URL  
-from api.themes import themes_blueprint
+from api.forms import forms_blueprint
 
 load_dotenv()
 
@@ -21,10 +20,10 @@ client = MongoClient(os.getenv('MONGO_CONNECTION_STRING'))
 db = client['user_forms']
 
 app.register_blueprint(user_blueprint, url_prefix='/api/users')
-app.register_blueprint(themes_blueprint, url_prefix='/api/forms')
-app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)  # Register SWAGGERUI_BLUEPRINT
+app.register_blueprint(forms_blueprint, url_prefix='/api/forms')
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
-@app.route('/static/<path:path>')  # Add this
+@app.route('/static/<path:path>')
 def send_static(path):
     return current_app.send_static_file(path)
 
