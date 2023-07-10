@@ -1,5 +1,10 @@
 import "./css/App.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import Admin from "./Admin/Admin.js";
@@ -7,7 +12,6 @@ import Home from "./Home.js";
 import User from "./User/User.js";
 import Navbar from "./Navbar.js";
 import Login from "./User/Login.js";
-import Register from "./User/Register.js";
 import FormPanel from "./Admin/FormPanel.js";
 import EditForm from "./Admin/EditForm.js";
 import Answers from "./Admin/Answer.js";
@@ -40,7 +44,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminRoute />} />
         <Route path="/formpanel" element={<FormRoute />} />
         <Route path="/editform" element={<EditRoute />} />

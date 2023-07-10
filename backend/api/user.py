@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
@@ -11,7 +11,7 @@ from .utils import admin_required, user_from_request
 from flask_swagger_ui import get_swaggerui_blueprint
 import base64
 import re
-from flask import Blueprint, request, jsonify, session
+from flask_jwt_extended import JWTManager
 import ldap
 
 load_dotenv()
@@ -96,19 +96,21 @@ def login():
     if username and password:
         user_data = ldap_authenticate(username, password)
         if user_data:
-            # Store user data in the session
-            session['user_data'] = user_data
-            return jsonify({'message': 'Authentication successful', 'user_data': user_data})
+            # Generate a JWT token
+            access_token = create_access_token(identity=user_data)
+            return jsonify({'message': 'Authentication successful', 'access_token': access_token, 'user_data': user_data})
         else:
             return jsonify({'message': 'Authentication failed'})
     else:
         return jsonify({'message': 'Invalid request'}), 400
 
 @user_blueprint.route('/protected_resource')
+@jwt_required()
 def protected_resource():
-    # Retrieve user data from the session
-    user_data = session.get('user_data')
+    # Retrieve user data from the JWT token
+    user_data = get_jwt_identity()
     if user_data:
         return jsonify({'message': 'Access granted', 'user_data': user_data})
     else:
         return jsonify({'message': 'Access denied'})
+

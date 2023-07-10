@@ -1,13 +1,16 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./css/App.css";
-import './css/Navbar.css';
-
+import "./css/Navbar.css";
 
 const AdminLink = ({ to, className, children }) => {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
 
-  return isAdmin ? <Link to={to} className={className}>{children}</Link> : null;
+  return isAdmin ? (
+    <Link to={to} className={className}>
+      {children}
+    </Link>
+  ) : null;
 };
 
 const Navbar = () => {
@@ -16,7 +19,9 @@ const Navbar = () => {
   const username = localStorage.getItem("username");
 
   const logout = () => {
-    ["token", "isAdmin", "username", "isToastShown"].forEach(item => localStorage.removeItem(item));
+    ["token", "isAdmin", "username", "isToastShown"].forEach((item) =>
+      localStorage.removeItem(item)
+    );
     navigate("/");
   };
 
@@ -46,9 +51,6 @@ const Navbar = () => {
             {" "}
             <Link to="/login" className="home-link">
               Login
-            </Link>
-            <Link to="/register" className="home-link">
-              Register
             </Link>
           </>
         )}
