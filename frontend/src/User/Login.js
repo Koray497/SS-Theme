@@ -6,7 +6,8 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const successfulLogin = (username, isAdmin, token) => {
+  const successfulLogin = (username, ou, token) => {
+    const isAdmin = ou === "Admin" ? true : false;
     localStorage.setItem("token", token);
     localStorage.setItem("isAdmin", isAdmin);
     localStorage.setItem("username", username);
@@ -24,9 +25,13 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log(data);
+      console.log(data.user_data);
       if (response.ok) {
-        successfulLogin(data.username, data.isAdmin, data.access_token);
+        successfulLogin(
+          data.user_data.username,
+          data.user_data.ou,
+          data.access_token
+        );
       } else {
         if (response.status === 401) {
           toast.error("Wrong username or password", {
