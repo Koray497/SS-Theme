@@ -1,5 +1,5 @@
 # SS-Theme
-This is a full-stack web application that allows users to register, view forms, and submit responses to these forms. The application uses Flask and MongoDB for the backend and React for the frontend.
+This is a full-stack web application that allows users to view forms, and submit responses to these forms. The application uses Flask and MongoDB for the backend and React for the frontend.
 
 ## Technologies used
 
