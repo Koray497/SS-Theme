@@ -1,4 +1,5 @@
 # SS-Theme
+
 This is a full-stack web application that allows users to view forms, and submit responses to these forms. The application uses Flask and MongoDB for the backend and React for the frontend.
 
 ## Technologies used
@@ -8,6 +9,7 @@ This is a full-stack web application that allows users to view forms, and submit
 - Infrastructure: Docker
 
 ## Application Architecture
+
 The frontend allows users to register and log in. Registered users can view and submit responses to various forms.
 
 The backend uses Flask and MongoDB to manage user information and form data.
@@ -35,7 +37,7 @@ cd SS-Theme
 
 docker compose up
 
-The application can then be accessed at http://localhost:3000 for the frontend and http://localhost:5000 for the backend API.
+The application can then be accessed at http://127.0.0.1:3000 for the frontend and http://127.0.0.1:5000 for the backend API.
 
 ## Contributing
 

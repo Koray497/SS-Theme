@@ -10,7 +10,7 @@ const DownloadForms = () => {
   const downloadForms = async () => {
     setIsLoading(true);
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:5000/api/forms/getall", {
+    const response = await fetch("http://127.0.0.1:5000/api/forms/getall", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +42,7 @@ const DownloadForms = () => {
 
   const showPreview = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:5000/api/forms/getall", {
+    const response = await fetch("http://127.0.0.1:5000/api/forms/getall", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -61,11 +61,7 @@ const DownloadForms = () => {
 
   return (
     <Box>
-      <Button
-        variant="contained"
-        onClick={downloadForms}
-        disabled={isLoading}
-      >
+      <Button variant="contained" onClick={downloadForms} disabled={isLoading}>
         {isLoading ? "Downloading..." : "Download Form Data in JSON"}
       </Button>
       <Button
@@ -77,7 +73,10 @@ const DownloadForms = () => {
         {isLoading ? "Fetching Preview..." : "Show Preview"}
       </Button>
       {isPreviewShown && (
-        <Typography variant="body1" style={{ whiteSpace: "pre-wrap", marginTop: "10px" }}>
+        <Typography
+          variant="body1"
+          style={{ whiteSpace: "pre-wrap", marginTop: "10px" }}
+        >
           {previewData}
         </Typography>
       )}

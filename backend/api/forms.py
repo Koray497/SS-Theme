@@ -54,15 +54,15 @@ def delete_form(form_id):
 @jwt_required()
 def add_response(form_id):
     response_data = request.get_json()
-    user = user_from_request(request)
+    user_data = user_from_request(request)
+    print(user_data)
     updated = False
     for answer_data in response_data:
         question_id = answer_data['questionId']
         answer = answer_data.get('answer', None)
         answer_data = {
             'id': str(uuid.uuid4()),
-            'userId': user['_id'],
-            'username': user['username'],
+            'username': user_data['username'],
             'answer': answer
         }
 
@@ -74,7 +74,7 @@ def add_response(form_id):
                         'id': question_id,
                         'answers': {
                             '$elemMatch': {
-                                'userId': user['_id']
+                                'username': user_data['username']
                             }
                         }
                     }
@@ -86,9 +86,9 @@ def add_response(form_id):
         if existing_answer:
             updated = True
             forms_collection.update_one(
-                {'id': form_id, 'formQuestions.id': question_id, 'formQuestions.answers.userId': user['_id']},
+                {'id': form_id, 'formQuestions.id': question_id, 'formQuestions.answers.username': user_data['username']},
                 {'$set': {'formQuestions.$.answers.$[elem].answer': answer}},
-                array_filters=[{'elem.userId': user['_id']}]
+                array_filters=[{'elem.username': user_data['username']}]
             )
         else:
             forms_collection.update_one(

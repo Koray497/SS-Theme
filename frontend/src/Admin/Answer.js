@@ -13,7 +13,7 @@ const Answers = () => {
     const token = localStorage.getItem("token");
     const fetchForms = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/forms/getall", {
+        const response = await fetch("http://127.0.0.1:5000/api/forms/getall", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

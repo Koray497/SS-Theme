@@ -40,7 +40,7 @@ const QuestionInput = ({
     };
     handleAddQuestion(question);
     setPromptInput("");
-    setTypeInput("text");
+    setTypeInput("dropdown");
     setOptionsInput([]);
     setOptionInput("");
   };
@@ -61,7 +61,7 @@ const QuestionInput = ({
     };
     handleUpdateQuestion(editingIndex, updatedQuestion);
     setPromptInput("");
-    setTypeInput("text");
+    setTypeInput("dropdown");
     setOptionsInput([]);
     setOptionInput("");
     setEditingIndex(-1);
@@ -69,7 +69,7 @@ const QuestionInput = ({
 
   const cancelEdit = () => {
     setPromptInput("");
-    setTypeInput("text");
+    setTypeInput("dropdown");
     setOptionsInput([]);
     setOptionInput("");
     setEditingIndex(-1);
@@ -113,13 +113,10 @@ const QuestionInput = ({
         fullWidth
         margin="normal"
       >
-        <MenuItem value="text">Text</MenuItem>
-        <MenuItem value="longtext">Long Text</MenuItem>
-        <MenuItem value="numeric">Numeric</MenuItem>
         <MenuItem value="dropdown">Dropdown</MenuItem>
         <MenuItem value="checkbox">Checkbox</MenuItem>
       </TextField>
-      {(typeInput === "dropdown" || typeInput === "checkbox") && (
+      {typeInput === "dropdown" && (
         <div>
           <Typography variant="subtitle1">Options:</Typography>
           <OptionsList>
@@ -165,7 +162,11 @@ const QuestionInput = ({
       )}
       {editingIndex !== -1 ? (
         <div>
-          <Button className="add-form" variant="contained" onClick={updateQuestion}>
+          <Button
+            className="add-form"
+            variant="contained"
+            onClick={updateQuestion}
+          >
             Update Form
           </Button>
           <Button variant="outlined" onClick={cancelEdit}>
@@ -179,7 +180,7 @@ const QuestionInput = ({
           onClick={addQuestion}
           disabled={promptInput.trim() === ""}
         >
-          Add Form
+          Add Question
         </Button>
       )}
 
@@ -211,7 +212,11 @@ const QuestionInput = ({
               </OptionsList>
             </div>
           )}
-          <Button className="add-form" variant="outlined" onClick={() => editQuestion(index)}>
+          <Button
+            className="add-form"
+            variant="outlined"
+            onClick={() => editQuestion(index)}
+          >
             Edit
           </Button>
           <Button

@@ -44,7 +44,7 @@ const EditForm = () => {
 
   const fetchForms = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://localhost:5000/api/forms/getall", {
+    const response = await fetch("http://127.0.0.1:5000/api/forms/getall", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ const EditForm = () => {
   const deleteForm = async (formId) => {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://localhost:5000/api/forms/delete/${formId}`,
+      `http://127.0.0.1:5000/api/forms/delete/${formId}`,
       {
         method: "POST",
         headers: {
@@ -97,7 +97,7 @@ const EditForm = () => {
     delete updatedForm._id;
 
     const response = await fetch(
-      `http://localhost:5000/api/forms/${selectedForm.id}`,
+      `http://127.0.0.1:5000/api/forms/${selectedForm.id}`,
       {
         method: "POST",
         headers: {
@@ -143,7 +143,7 @@ const EditForm = () => {
       prevQuestions.filter((_, i) => i !== index)
     );
   };
-  
+
   return (
     <CenteredContainer>
       <Typography variant="h5" gutterBottom>
@@ -178,23 +178,23 @@ const EditForm = () => {
         </FormListItem>
       </FormList>
       <div>
-      <QuestionInput
-        questions={questions}
-        handleAddQuestion={addQuestion}
-        handleUpdateQuestion={updateQuestion}
-        handleDeleteQuestion={deleteQuestion}
-      />
-  <Button
-    className="add-form"
-    disabled={questions.length < 1}
-    variant="contained"
-    type="submit"
-    sx={{ marginTop: "1rem" }}
-    onClick={updateForm}
-  >
-    Update Form
-  </Button>
-  </div>
+        <QuestionInput
+          questions={questions}
+          handleAddQuestion={addQuestion}
+          handleUpdateQuestion={updateQuestion}
+          handleDeleteQuestion={deleteQuestion}
+        />
+        <Button
+          className="add-form"
+          disabled={questions.length < 1}
+          variant="contained"
+          type="submit"
+          sx={{ marginTop: "1rem" }}
+          onClick={updateForm}
+        >
+          Update Form
+        </Button>
+      </div>
     </CenteredContainer>
   );
 };
