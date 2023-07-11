@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, FormControl, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import QuestionInput from "../QuestionInput";
-import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 
 const FormPanel = () => {
@@ -25,19 +24,9 @@ const FormPanel = () => {
     setQuestions(updatedQuestions);
   };
 
-  const prepareQuestions = () => {
-    return questions.map((question) => ({
-      ...question,
-      id: uuidv4(),
-      answers: [],
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem("token");
-
-    const preparedQuestions = prepareQuestions();
 
     try {
       const response = await fetch("http://127.0.0.1:5000/api/forms/create", {
@@ -48,7 +37,7 @@ const FormPanel = () => {
         },
         body: JSON.stringify({
           formName,
-          formQuestions: preparedQuestions,
+          formQuestions: questions,
         }),
       });
 

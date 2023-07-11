@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, MenuItem, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Box from "@mui/material/Box";
+import { v4 as uuidv4 } from "uuid";
 
 const OptionsList = styled("ul")({
   paddingLeft: 0,
@@ -34,9 +35,11 @@ const QuestionInput = ({
 
   const addQuestion = () => {
     const question = {
+      id: uuidv4(),
       prompt: promptInput,
       type: typeInput,
       options: optionsInput,
+      answers: [],
     };
     handleAddQuestion(question);
     setPromptInput("");

@@ -1,6 +1,5 @@
 from jwt import decode, InvalidTokenError, ExpiredSignatureError
 from functools import wraps
-from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import current_app
 from pymongo import MongoClient
 from dotenv import load_dotenv
@@ -9,13 +8,15 @@ from flask import jsonify, request
 import ldap
 import re
 import base64
+import uuid
+
 
 
 load_dotenv()
 
 client = MongoClient(os.getenv('MONGO_CONNECTION_STRING'))
 db = client['user_forms']
-users_collection = db['users']
+forms_collection = db['forms']
 
 
 
@@ -24,6 +25,37 @@ def extract_ou_from_dn(dn):
     if ou_match:
         return ou_match.group(1)
     return None
+
+
+def add_default_answers(username):
+    forms = forms_collection.find()
+    for form in forms:
+        for question in form['formQuestions']:
+            question_id = question['id']
+            if not any(answer['username'] == username for answer in question['answers']):
+                if question['type'] == 'dropdown':
+                    default_answer = question['options'][0]
+                else:
+                    default_answer = 0
+
+                default_answer_doc = {
+                    'id': str(uuid.uuid4()),
+                    'username': username,
+                    'answer': default_answer
+                }
+                question['answers'].append(default_answer_doc)
+
+                # Update the form in the database with the new answer
+                forms_collection.update_one(
+                    {'_id': form['_id']},
+                    {'$push': {'formQuestions.$[question].answers': default_answer_doc}},
+                    array_filters=[{'question.id': question_id}]
+                )
+
+    return forms
+
+
+
 
 def ldap_authenticate(username, password):
     try:

@@ -4,7 +4,6 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 from bson.json_util import dumps
-from bson.objectid import ObjectId
 import uuid
 from .utils import admin_required, user_from_request
 
