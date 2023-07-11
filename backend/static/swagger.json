@@ -25,6 +25,10 @@
     {
       "name": "Form Management",
       "description": "API for managing forms"
+    },
+    {
+      "name": "Activity Logs",
+      "description": "API for managing user activity logs"
     }
   ],
   "paths": {
@@ -229,6 +233,72 @@
           }
         ]
       }
+    },
+    "/logs": {
+      "get": {
+        "tags": ["Activity Logs"],
+        "summary": "Get all logs",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Log"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No logs found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/log_activity": {
+      "post": {
+        "tags": ["Activity Logs"],
+        "summary": "Log an activity",
+        "requestBody": {
+          "description": "Activity logging data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogActivity"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Activity logged successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogActivityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data supplied"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -366,6 +436,38 @@
           "$ref": "#/components/schemas/Form"
         },
         "description": "Array of Form objects"
+      },
+      "Log": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Unique identifier for the log"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username of the user"
+          },
+          "activity": {
+            "type": "string",
+            "description": "Activity of the user"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the activity"
+          }
+        },
+        "required": ["_id", "username", "activity", "timestamp"]
+      },
+      "LogActivityResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Response message"
+          }
+        }
       }
     },
     "securitySchemes": {
