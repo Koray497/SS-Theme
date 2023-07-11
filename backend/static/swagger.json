@@ -75,6 +75,11 @@
               }
             }
           ],
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
           "requestBody": {
             "description": "Form creation data",
             "required": true,
@@ -147,6 +152,11 @@
                 "type": "string"
               }
             }
+          ],
+          "security": [
+            {
+              "BearerAuth": []
+            }
           ]
         },
         "delete": {
@@ -166,6 +176,11 @@
               "schema": {
                 "type": "string"
               }
+            }
+          ],
+          "security": [
+            {
+              "BearerAuth": []
             }
           ]
         }
@@ -205,6 +220,13 @@
       }
     },
     "components": {
+      "securitySchemes": {
+        "BearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
       "schemas": {
         "User": {
           "type": "object",
@@ -347,6 +369,11 @@
             }
           }
         }
-      }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
     }
   
