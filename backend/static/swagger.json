@@ -28,152 +28,55 @@
       }
     ],
     "paths": {
-      "/admin": {
-        "post": {
-          "tags": [
-            "User Management"
-          ],
-          "summary": "Register a new admin user",
-          "requestBody": {
-            "description": "Admin Registration",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "Admin user created successfully"
-            },
-            "400": {
-              "description": "Failed. Bad post data."
-            }
-          }
-        }
-      },
-      "/register": {
-        "post": {
-          "tags": [
-            "User Management"
-          ],
-          "summary": "Register a new user",
-          "requestBody": {
-            "description": "User Registration",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "User created successfully"
-            },
-            "409": {
-              "description": "Username already exists"
-            },
-            "400": {
-              "description": "Failed. Bad post data."
-            }
-          }
-        }
-      },
-      "/getusers": {
-        "get": {
-          "tags": [
-            "User Management"
-          ],
-          "summary": "Get all users",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Users"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "/login": {
         "post": {
-          "tags": [
-            "User Management"
-          ],
-          "summary": "Log in a user",
+          "tags": ["User Management"],
+          "summary": "User login",
           "requestBody": {
-            "description": "User Login",
+            "description": "User login data",
             "required": true,
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Login"
+                  "$ref": "#/components/schemas/UserLogin"
                 }
               }
             }
           },
           "responses": {
             "200": {
-              "description": "Successfully logged in",
+              "description": "Authentication successful",
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/LoginResponse"
+                    "$ref": "#/components/schemas/AuthResponse"
                   }
                 }
               }
             },
-            "401": {
-              "description": "The username or password is incorrect"
-            }
-          }
-        }
-      },
-      "/{username}": {
-        "post": {
-          "tags": [
-            "User Management"
-          ],
-          "summary": "Delete a user",
-          "parameters": [
-            {
-              "name": "username",
-              "in": "path",
-              "description": "Username of the user to delete",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "User deleted successfully"
-            },
-            "404": {
-              "description": "User not found"
+            "400": {
+              "description": "Authentication failed or Invalid request"
             }
           }
         }
       },
       "/create": {
         "post": {
-          "tags": [
-            "Form Management"
-          ],
+          "tags": ["Form Management"],
           "summary": "Create a new form",
+          "parameters": [
+            {
+              "name": "Authorization",
+              "in": "header",
+              "description": "Access token for authentication",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
           "requestBody": {
-            "description": "Form creation",
+            "description": "Form creation data",
             "required": true,
             "content": {
               "application/json": {
@@ -185,7 +88,7 @@
           },
           "responses": {
             "201": {
-              "description": "Form created successfully"
+              "description": "Form creation successful"
             },
             "404": {
               "description": "Form with name already exists"
@@ -195,9 +98,7 @@
       },
       "/getall": {
         "get": {
-          "tags": [
-            "Form Management"
-          ],
+          "tags": ["Form Management"],
           "summary": "Get all forms",
           "responses": {
             "200": {
@@ -218,28 +119,15 @@
       },
       "/{form_id}": {
         "post": {
-          "tags": [
-            "Form Management"
-          ],
-          "summary": "Update a form",
-          "parameters": [
-            {
-              "name": "form_id",
-              "in": "path",
-              "description": "ID of the form to update",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
+          "tags": ["Form Management"],
+          "summary": "Update form",
           "requestBody": {
             "description": "Form update data",
             "required": true,
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Form"
+                  "$ref": "#/components/schemas/FormUpdate"
                 }
               }
             }
@@ -248,308 +136,217 @@
             "200": {
               "description": "Form updated successfully"
             }
-          }
-        }
-      },
-      "/delete/{form_id}": {
-        "post": {
-          "tags": [
-            "Form Management"
-          ],
-          "summary": "Delete a form",
+          },
           "parameters": [
             {
               "name": "form_id",
               "in": "path",
-              "description": "ID of the form to delete",
+              "description": "ID of form to update",
               "required": true,
               "schema": {
                 "type": "string"
               }
             }
-          ],
+          ]
+        },
+        "delete": {
+          "tags": ["Form Management"],
+          "summary": "Delete form",
           "responses": {
             "200": {
               "description": "Form deleted successfully"
             }
-          }
-        }
-      },
-      "/{form_id}/responses": {
-        "post": {
-          "tags": [
-            "Form Management"
-          ],
-          "summary": "Add a response to a form",
+          },
           "parameters": [
             {
               "name": "form_id",
               "in": "path",
-              "description": "ID of the form to respond to",
+              "description": "ID of form to delete",
               "required": true,
               "schema": {
                 "type": "string"
               }
             }
-          ],
+          ]
+        }
+      },
+      "/{form_id}/responses": {
+        "post": {
+          "tags": ["Form Management"],
+          "summary": "Add form response",
           "requestBody": {
-            "description": "Response data",
+            "description": "Form response data",
             "required": true,
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Response"
+                  "$ref": "#/components/schemas/FormResponse"
                 }
               }
             }
           },
           "responses": {
             "200": {
-              "description": "Response added successfully"
-            },
-            "404": {
-              "description": "Form not found"
+              "description": "Response added or updated successfully"
             }
-          }
+          },
+          "parameters": [
+            {
+              "name": "form_id",
+              "in": "path",
+              "description": "ID of form to add response",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ]
         }
-      },
+      }
+    },
     "components": {
       "schemas": {
         "User": {
           "type": "object",
           "properties": {
-            "name": {
-              "type": "string"
-            },
             "username": {
               "type": "string"
             },
-            "password": {
-              "type": "string"
-            }
-          },
-          "example": {
-            "name": "John Doe",
-            "username": "john",
-            "password": "password123"
-          }
-        },
-        "Users": {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/User"
-          }
-        },
-        "Login": {
-          "type": "object",
-          "properties": {
-            "username": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            }
-          },
-          "example": {
-            "username": "john",
-            "password": "password123"
-          }
-        },
-        "LoginResponse": {
-          "type": "object",
-          "properties": {
-            "token": {
-              "type": "string"
-            }
-          },
-          "example": {
-            "token": "jwt_token"
-          }
-        },
-        "Form": {
-          "type": "object",
-          "properties": {
-            "title": {
-              "type": "string"
-            },
-            "questions": {
-              "type": "array",
-              "items": {
-                "type": "string"
+            "password":            {
+                "type": "string",
+                "format": "password"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "admin": {
+                "type": "boolean"
               }
-            }
-          },
-          "example": {
-            "title": "Survey Form",
-            "questions": ["Question 1", "Question 2"]
-          }
-        },
-        "Forms": {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/Form"
-          }
-        },
-        "Response": {
-          "type": "object",
-          "properties": {
-            "responses": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "example": {
-            "responses": ["Answer 1", "Answer 2"]
-          }
-        },
-        "Responses": {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/Response"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "username",
-          "password"
-        ]
-      },
-      "Login": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "username",
-          "password"
-        ]
-      },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "access_token": {
-            "type": "string"
-          },
-          "isAdmin": {
-            "type": "boolean"
-          },
-          "username": {
-            "type": "string"
-          }
-        }
-      },
-      "Users": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string"
             },
-            "username": {
-              "type": "string"
-            },
-            "isAdmin": {
-              "type": "boolean"
-            }
-          }
-        }
-      },
-      "Form": {
-        "type": "object",
-        "properties": {
-          "_id": {
+            "required": ["username", "password"]
+          },
+          "UserLogin": {
             "type": "object",
             "properties": {
-              "$oid": {
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string",
+                "format": "password"
+              }
+            },
+            "required": ["username", "password"]
+          },
+          "AuthResponse": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              }
+            },
+            "required": ["token"]
+          },
+          "AccessResponse": {
+            "type": "object",
+            "properties": {
+              "message": {
                 "type": "string"
               }
             }
           },
-          "formName": {
-            "type": "string"
-          },
-          "formQuestions": {
+          "Users": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "prompt": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "Form": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Question"
+                }
+              }
+            },
+            "required": ["title", "description", "questions"]
+          },
+          "Question": {
+            "type": "object",
+            "properties": {
+              "question_text": {
+                "type": "string"
+              },
+              "question_type": {
+                "type": "string",
+                "enum": ["text", "choice", "multiple_choice"]
+              },
+              "options": {
+                "type": "array",
+                "items": {
                   "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                },
-                "options": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "id": {
-                  "type": "string"
-                },
-                "answers": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string"
-                      },
-                      "userId": {
-                        "type": "object",
-                        "properties": {
-                          "$oid": {
-                            "type": "string"
-                          }
-                        }
-                      },
-                      "username": {
-                        "type": "string"
-                      },
-                      "answer": {
-                        "type": "string"
-                      }
-                    }
-                  }
+                }
+              }
+            },
+            "required": ["question_text", "question_type"]
+          },
+          "FormUpdate": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Question"
                 }
               }
             }
           },
-          "id": {
-            "type": "string"
+          "FormResponse": {
+            "type": "object",
+            "properties": {
+              "responses": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/QuestionResponse"
+                }
+              }
+            },
+            "required": ["responses"]
+          },
+          "QuestionResponse": {
+            "type": "object",
+            "properties": {
+              "question_text": {
+                "type": "string"
+              },
+              "response": {
+                "type": "string"
+              }
+            },
+            "required": ["question_text", "response"]
+          },
+          "Forms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Form"
+            }
           }
-        }
-      },
-      "Forms": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Form"
         }
       }
     }
-  }
-}
   
