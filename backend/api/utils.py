@@ -17,11 +17,7 @@ client = MongoClient(os.getenv('MONGO_CONNECTION_STRING'))
 db = client['user_forms']
 users_collection = db['users']
 
-# LDAP configuration
-LDAP_SERVER = 'ldap://192.168.1.66:389'
-LDAP_BASE_DN = 'ou=People,dc=sstek,dc=com'
-LDAP_BIND_DN = 'cn=admin,dc=sstek,dc=com'
-LDAP_BIND_PASSWORD = '123'
+
 
 def extract_ou_from_dn(dn):
     ou_match = re.search(r'cn=[^,]+,ou=([^,]+)', dn)
@@ -32,13 +28,13 @@ def extract_ou_from_dn(dn):
 def ldap_authenticate(username, password):
     try:
         # Connect to the LDAP server
-        ldap_connection = ldap.initialize(LDAP_SERVER)
-        ldap_connection.simple_bind_s(LDAP_BIND_DN, LDAP_BIND_PASSWORD)
+        ldap_connection = ldap.initialize(os.getenv('LDAP_SERVER'))
+        ldap_connection.simple_bind_s(os.getenv('LDAP_BIND_DN'), os.getenv('LDAP_BIND_PASSWORD'))
         print("LDAP connection successful")
 
         # Search for the user
         search_filter = f"(uid={username})"
-        result = ldap_connection.search_s(LDAP_BASE_DN, ldap.SCOPE_SUBTREE, search_filter)
+        result = ldap_connection.search_s(os.getenv('LDAP_BASE_DN'), ldap.SCOPE_SUBTREE, search_filter)
 
         if result:
             dn, attributes = result[0]
