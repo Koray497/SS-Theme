@@ -45,14 +45,3 @@ def login():
             return jsonify({'message': 'Authentication failed'})
     else:
         return jsonify({'message': 'Invalid request'}), 400
-
-@user_blueprint.route('/protected_resource')
-@jwt_required()
-def protected_resource():
-    # Retrieve user data from the JWT token
-    user_data = get_jwt_identity()
-    if user_data:
-        return jsonify({'message': 'Access granted', 'user_data': user_data})
-    else:
-        return jsonify({'message': 'Access denied'})
-

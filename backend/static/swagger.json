@@ -1,379 +1,379 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "description": "SS-Theme",
-      "version": "1.0.0",
-      "title": "SS-Theme Api Test",
-      "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
-      }
-    },
-    "servers": [
-      {
-        "url": "/api/users"
-      },
-      {
-        "url": "/api/forms"
-      }
-    ],
-    "tags": [
-      {
-        "name": "User Management",
-        "description": "API for managing users"
-      },
-      {
-        "name": "Form Management",
-        "description": "API for managing forms"
-      }
-    ],
-    "paths": {
-      "/login": {
-        "post": {
-          "tags": ["User Management"],
-          "summary": "User login",
-          "requestBody": {
-            "description": "User login data",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserLogin"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Authentication successful",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/AuthResponse"
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Authentication failed or Invalid request"
-            }
-          }
-        }
-      },
-      "/create": {
-        "post": {
-          "tags": ["Form Management"],
-          "summary": "Create a new form",
-          "parameters": [
-            {
-              "name": "Authorization",
-              "in": "header",
-              "description": "Access token for authentication",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "security": [
-            {
-              "BearerAuth": []
-            }
-          ],
-          "requestBody": {
-            "description": "Form creation data",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Form"
-                }
-              }
-            }
-          },
-          "responses": {
-            "201": {
-              "description": "Form creation successful"
-            },
-            "404": {
-              "description": "Form with name already exists"
-            }
-          }
-        }
-      },
-      "/getall": {
-        "get": {
-          "tags": ["Form Management"],
-          "summary": "Get all forms",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Forms"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "No forms found"
-            }
-          }
-        }
-      },
-      "/{form_id}": {
-        "post": {
-          "tags": ["Form Management"],
-          "summary": "Update form",
-          "requestBody": {
-            "description": "Form update data",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FormUpdate"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Form updated successfully"
-            }
-          },
-          "parameters": [
-            {
-              "name": "form_id",
-              "in": "path",
-              "description": "ID of form to update",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "security": [
-            {
-              "BearerAuth": []
-            }
-          ]
-        },
-        "delete": {
-          "tags": ["Form Management"],
-          "summary": "Delete form",
-          "responses": {
-            "200": {
-              "description": "Form deleted successfully"
-            }
-          },
-          "parameters": [
-            {
-              "name": "form_id",
-              "in": "path",
-              "description": "ID of form to delete",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ],
-          "security": [
-            {
-              "BearerAuth": []
-            }
-          ]
-        }
-      },
-      "/{form_id}/responses": {
-        "post": {
-          "tags": ["Form Management"],
-          "summary": "Add form response",
-          "requestBody": {
-            "description": "Form response data",
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FormResponse"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "Response added or updated successfully"
-            }
-          },
-          "parameters": [
-            {
-              "name": "form_id",
-              "in": "path",
-              "description": "ID of form to add response",
-              "required": true,
-              "schema": {
-                "type": "string"
-              }
-            }
-          ]
-        }
-      }
-    },
-    "components": {
-      "securitySchemes": {
-        "BearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
-        }
-      },
-      "schemas": {
-        "User": {
-          "type": "object",
-          "properties": {
-            "username": {
-              "type": "string"
-            },
-            "password":            {
-                "type": "string",
-                "format": "password"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              },
-              "admin": {
-                "type": "boolean"
-              }
-            },
-            "required": ["username", "password"]
-          },
-          "UserLogin": {
-            "type": "object",
-            "properties": {
-              "username": {
-                "type": "string"
-              },
-              "password": {
-                "type": "string",
-                "format": "password"
-              }
-            },
-            "required": ["username", "password"]
-          },
-          "AuthResponse": {
-            "type": "object",
-            "properties": {
-              "token": {
-                "type": "string"
-              }
-            },
-            "required": ["token"]
-          },
-          "AccessResponse": {
-            "type": "object",
-            "properties": {
-              "message": {
-                "type": "string"
-              }
-            }
-          },
-          "Users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/User"
-            }
-          },
-          "Form": {
-            "type": "object",
-            "properties": {
-              "title": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              },
-              "questions": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Question"
-                }
-              }
-            },
-            "required": ["title", "description", "questions"]
-          },
-          "Question": {
-            "type": "object",
-            "properties": {
-              "question_text": {
-                "type": "string"
-              },
-              "question_type": {
-                "type": "string",
-                "enum": ["text", "choice", "multiple_choice"]
-              },
-              "options": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "required": ["question_text", "question_type"]
-          },
-          "FormUpdate": {
-            "type": "object",
-            "properties": {
-              "title": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string"
-              },
-              "questions": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Question"
-                }
-              }
-            }
-          },
-          "FormResponse": {
-            "type": "object",
-            "properties": {
-              "responses": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/QuestionResponse"
-                }
-              }
-            },
-            "required": ["responses"]
-          },
-          "QuestionResponse": {
-            "type": "object",
-            "properties": {
-              "question_text": {
-                "type": "string"
-              },
-              "response": {
-                "type": "string"
-              }
-            },
-            "required": ["question_text", "response"]
-          },
-          "Forms": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Form"
-            }
-          }
-        }
-      },
-      "security": [
-        {
-          "BearerAuth": []
-        }
-      ]
+  "openapi": "3.0.0",
+  "info": {
+    "description": "SS-Theme",
+    "version": "1.0.0",
+    "title": "SS-Theme Api Test",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
     }
-  
+  },
+  "servers": [
+    {
+      "url": "/api/users"
+    },
+    {
+      "url": "/api/forms"
+    }
+  ],
+  "tags": [
+    {
+      "name": "User Management",
+      "description": "API for managing users"
+    },
+    {
+      "name": "Form Management",
+      "description": "API for managing forms"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["User Management"],
+        "summary": "User login",
+        "requestBody": {
+          "description": "User login data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Authentication failed or Invalid request"
+          }
+        }
+      }
+    },
+    "/create": {
+      "post": {
+        "tags": ["Form Management"],
+        "summary": "Create a new form",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Form creation data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Form"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Form creation successful"
+          },
+          "404": {
+            "description": "Form with name already exists"
+          }
+        }
+      }
+    },
+    "/getall": {
+      "get": {
+        "tags": ["Form Management"],
+        "summary": "Get all forms",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forms"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No forms found"
+          }
+        }
+      }
+    },
+    "/delete/{form_id}": {
+      "post": {
+        "tags": ["Form Management"],
+        "summary": "Delete form",
+        "description": "Deletes a form using its ID",
+        "operationId": "deleteForm",
+        "parameters": [
+          {
+            "name": "form_id",
+            "in": "path",
+            "description": "ID of form to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Form deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "msg": {
+                      "type": "string",
+                      "example": "Form deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Form not found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },    
+    "/{form_id}": {
+      "post": {
+        "tags": ["Form Management"],
+        "summary": "Update form",
+        "requestBody": {
+          "description": "Form update data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FormUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Form updated successfully"
+          }
+        },
+        "parameters": [
+          {
+            "name": "form_id",
+            "in": "path",
+            "description": "ID of form to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/{form_id}/responses": {
+      "post": {
+        "tags": ["Form Management"],
+        "summary": "Add form response",
+        "requestBody": {
+          "description": "Form response data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FormResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response added or updated successfully"
+          }
+        },
+        "parameters": [
+          {
+            "name": "form_id",
+            "in": "path",
+            "description": "ID of form to add response",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username of the user"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password of the user"
+          }
+        },
+        "required": ["username", "password"]
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Response message"
+          },
+          "access_token": {
+            "type": "string",
+            "description": "Access token for authenticated user"
+          },
+          "user_data": {
+            "type": "object",
+            "description": "User data details"
+          }
+        }
+      },
+      "Form": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the form"
+          },
+          "formName": {
+            "type": "string",
+            "description": "Name of the form"
+          },
+          "formQuestions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "question_text": {
+                  "type": "string",
+                  "description": "Text of the question"
+                },
+                "question_type": {
+                  "type": "string",
+                  "description": "Type of the question (text, choice, multiple_choice)"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Available options for the question"
+                }
+              },
+              "required": ["question_text", "question_type"]
+            },
+            "description": "Questions in the form"
+          }
+        },
+        "required": ["id", "formName", "formQuestions"]
+      },
+      "FormUpdate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the form"
+          },
+          "formName": {
+            "type": "string",
+            "description": "Updated form name"
+          },
+          "formQuestions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "question_text": {
+                  "type": "string",
+                  "description": "Text of the question"
+                },
+                "question_type": {
+                  "type": "string",
+                  "description": "Type of the question (text, choice, multiple_choice)"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Available options for the question"
+                }
+              },
+              "required": ["question_text", "question_type"]
+            },
+            "description": "Updated questions in the form"
+          }
+        },
+        "required": ["id", "formName", "formQuestions"]
+      },
+      "FormResponse": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "description": "Question ID to which response is made"
+          },
+          "answer": {
+            "type": "string",
+            "description": "Answer for the question"
+          },
+          "username": {
+            "type": "string",
+            "description": "Username of the respondent"
+          }
+        },
+        "required": ["questionId", "answer", "username"]
+      },
+      "Forms": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Form"
+        },
+        "description": "Array of Form objects"
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }    
+  }
