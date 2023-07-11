@@ -9,6 +9,7 @@ import ldap
 import re
 import base64
 import uuid
+from datetime import datetime
 
 
 
@@ -17,8 +18,12 @@ load_dotenv()
 client = MongoClient(os.getenv('MONGO_CONNECTION_STRING'))
 db = client['user_forms']
 forms_collection = db['forms']
+logs_collection = db['logs']
 
 
+def log_activity(username, activity):
+    log = {"username": username, "activity": activity, "timestamp": datetime.utcnow()}
+    logs_collection.insert_one(log)
 
 def extract_ou_from_dn(dn):
     ou_match = re.search(r'cn=[^,]+,ou=([^,]+)', dn)

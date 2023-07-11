@@ -1,7 +1,52 @@
+import React, { useEffect, useState } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+
 const UserActivities = () => {
+  const [logs, setLogs] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const fetchLogs = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api/users/logs", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setLogs(
+            data.map((log, idx) => ({
+              id: idx,
+              username: log.username,
+              activity: log.activity,
+              timestamp: new Date(log.timestamp).toLocaleString(),
+            }))
+          );
+        } else {
+          console.error(data);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchLogs();
+  }, []);
+
+  const columns = [
+    { field: "username", headerName: "Username", width: 200 },
+    { field: "activity", headerName: "Activity", width: 300 },
+    { field: "timestamp", headerName: "Timestamp", width: 200 },
+  ];
+
   return (
-    <div>
-      <h1>hello</h1>
+    <div style={{ height: 400, width: "100%" }}>
+      <DataGrid rows={logs} columns={columns} pageSize={5} />
     </div>
   );
 };
