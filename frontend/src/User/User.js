@@ -7,6 +7,7 @@ import {
   MenuItem,
   Select,
   Typography,
+  Paper,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { toast } from "react-toastify";
@@ -143,77 +144,97 @@ const User = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: "0 auto", marginTop: "5rem" }}>
-      <Typography variant="h4" sx={{ marginBottom: "1rem" }}>
-        User Page
-      </Typography>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        p: 2,
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{ p: 4, backgroundColor: "white", width: "80vw", maxWidth: 800 }}
+      >
+        <Typography
+          variant="h4"
+          sx={{ marginBottom: "1rem", textAlign: "center" }}
+        >
+          User Page
+        </Typography>
 
-      <form onSubmit={handleSubmit}>
-        <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
-          <Select
-            value={selectedForm.formName || ""}
-            onChange={handleFormChange}
-            displayEmpty
-            inputProps={{ "aria-label": "Select a form" }}
-          >
-            <MenuItem value="" disabled>
-              Select a Form
-            </MenuItem>
-            {forms?.map((form) => (
-              <MenuItem key={form.formName} value={form.formName}>
-                {form.formName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        {selectedForm && (
-          <div>
-            {selectedForm?.formQuestions.map((question, index) => (
-              <FormControl key={index} fullWidth sx={{ marginBottom: "1rem" }}>
-                <Typography variant="subtitle1">{question.prompt}</Typography>
-
-                {question?.type === "dropdown" && (
-                  <Select
-                    value={answers[index]?.answer}
-                    onChange={(e) => handleAnswerChange(e, index)}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Select an option" }}
-                  >
-                    <MenuItem value="" disabled>
-                      Select an option
-                    </MenuItem>
-                    {question.options?.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                )}
-
-                {question?.type === "checkbox" && (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={answers[index]?.answer === 1}
-                        onChange={(e) => handleCheckboxChange(e, index)}
-                      />
-                    }
-                  />
-                )}
-              </FormControl>
-            ))}
-
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ marginTop: "1rem" }}
+        <form onSubmit={handleSubmit}>
+          <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
+            <Select
+              value={selectedForm.formName || ""}
+              onChange={handleFormChange}
+              displayEmpty
+              inputProps={{ "aria-label": "Select a form" }}
             >
-              {updating ? "Update" : "Submit"}
-            </Button>
-          </div>
-        )}
-      </form>
+              <MenuItem value="" disabled>
+                Select a Form
+              </MenuItem>
+              {forms?.map((form) => (
+                <MenuItem key={form.formName} value={form.formName}>
+                  {form.formName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {selectedForm && (
+            <div>
+              {selectedForm?.formQuestions.map((question, index) => (
+                <FormControl
+                  key={index}
+                  fullWidth
+                  sx={{ marginBottom: "1rem" }}
+                >
+                  <Typography variant="subtitle1">{question.prompt}</Typography>
+
+                  {question?.type === "dropdown" && (
+                    <Select
+                      value={answers[index]?.answer}
+                      onChange={(e) => handleAnswerChange(e, index)}
+                      displayEmpty
+                      inputProps={{ "aria-label": "Select an option" }}
+                    >
+                      <MenuItem value="" disabled>
+                        Select an option
+                      </MenuItem>
+                      {question.options?.map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  )}
+
+                  {question?.type === "checkbox" && (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={answers[index]?.answer === 1}
+                          onChange={(e) => handleCheckboxChange(e, index)}
+                        />
+                      }
+                    />
+                  )}
+                </FormControl>
+              ))}
+
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ marginTop: "1rem" }}
+              >
+                {updating ? "Update" : "Submit"}
+              </Button>
+            </div>
+          )}
+        </form>
+      </Paper>
     </Box>
   );
 };

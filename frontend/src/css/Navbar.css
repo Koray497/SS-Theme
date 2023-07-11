@@ -1,71 +1,89 @@
-
 .navbar {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    background-color: #282c34;
-    color: white;
-  }
-  
-  .navbar .logo {
-    height: 40px;
-    width: 40px;
-    margin-right: 20px; /* Adjust the right margin to control space between logo and app name */
-  }
-  
-  .navbar .app-name {
-    margin-right: 100px; /* Adjust the right margin to control space between app name and nav-links */
-  }
-  
-  .navbar .nav-links {
-    display: flex;
-  }
-  
-  .navbar .nav-links a {
-    color: #61dafb;
-    text-decoration: none;
-    margin-right: 80px; /* Adjust the right margin to control space between the links */
-  }
-  
-  .navbar .nav-links a:hover {
-    color: #1a94b6;
-    text-decoration: none;
-    margin-right: 80px; /* Adjust the right margin to control space between the links */
-  }
-  
-  .navbar .right-content {
-    display: flex;
-    align-items: center;
-    margin-left: auto; /* This pushes the right-content to the right */
-    gap: 20px;
-  }
-  
-  .navbar .user-info {
-    color: #fff;
-  }
-  
-  .logout-btn {
-    width: 300px;
-    padding: 10px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .logout-btn:hover {
-    background-color: #45a049;
-  }
-  
-  .home-link {
-    color:  #61dafb;
-    text-decoration: none;
-    margin-right: 80px; /* Adjust the right margin to control space between the links */
-  }
-  
-  .home-link:hover {
-    color: #1a94b6;
-    text-decoration: none;
-    margin-right: 80px; /* Adjust the right margin to control space between the links */
-  }
+  position: fixed;  /* This will keep the Navbar at the top of the page */
+  top: 0;  /* Align Navbar to the top */
+  left: 0;  /* Align Navbar to the left */
+  width: 100%;  /* This will make Navbar stretch across the full width of the page */
+  z-index: 999;  /* This will ensure Navbar stays on top of other elements */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #34495e;
+  color: white;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 20px;
+}
+
+.app-name {
+  font-size: 1.8em;
+  margin-right: 70px;
+}
+
+.nav-links {
+  display: flex;
+}
+
+.nav-link {
+  margin-right: 40px;
+  padding: 10px 20px;  /* Add padding to increase button size */
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+  border: 1px solid transparent;  /* Add a transparent border */
+  border-radius: 5px;  /* Rounded corners */
+}
+
+.nav-link:hover {
+  color: #1abc9c;
+  border: 1px solid #1abc9c;  /* Border on hover */
+}
+
+.nav-right {
+  margin-right: 200px;
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 100px;
+  padding: 10px;
+  background-color: #34495e;
+  border: 1px solid white;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.logout-btn {
+  all: unset;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;  /* Add padding to increase button size */
+  border: 1px solid transparent;  /* Add a transparent border */
+  border-radius: 5px;  /* Rounded corners */
+}
+
+.logout-btn:hover {
+  color: #1abc9c;
+  border: 1px solid #1abc9c;  /* Border on hover */
+}
+
+.login-link {
+  padding: 10px 20px;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+.login-link:hover {
+  background-color: white;
+  color: #34495e;
+}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "../css/Login.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -47,22 +48,26 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
+    <div className="login-container">
       <h1>Login</h1>
       <div className="form-container">
         <input
+          className="login-input"
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
+          className="login-input"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleLogin}>Login</button>
+        <button className="login-button" onClick={handleLogin}>
+          Login
+        </button>
       </div>
     </div>
   );

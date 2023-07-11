@@ -42,6 +42,6 @@ def login():
             access_token = create_access_token(identity=user_data)
             return jsonify({'message': 'Authentication successful', 'access_token': access_token, 'user_data': user_data})
         else:
-            return jsonify({'message': 'Authentication failed'})
+            return jsonify({'message': 'Authentication failed'}), 401
     else:
         return jsonify({'message': 'Invalid request'}), 400

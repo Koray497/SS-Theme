@@ -38,19 +38,21 @@ function AnswerRoute() {
 
 function App() {
   return (
-    <Router>
-      <ToastContainer />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<AdminRoute />} />
-        <Route path="/formpanel" element={<FormRoute />} />
-        <Route path="/editform" element={<EditRoute />} />
-        <Route path="/answers" element={<AnswerRoute />} />
-        <Route path="/user" element={<User />} />
-      </Routes>
-    </Router>
+    <div className="app-container">
+      <Router>
+        <ToastContainer />
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<AdminRoute />} />
+          <Route path="/formpanel" element={<FormRoute />} />
+          <Route path="/editform" element={<EditRoute />} />
+          <Route path="/answers" element={<AnswerRoute />} />
+          <Route path="/user" element={<User />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

@@ -1,19 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./css/App.css";
 import "./css/Navbar.css";
 
-const AdminLink = ({ to, className, children }) => {
+const AdminLink = ({ to, children }) => {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
-
   return isAdmin ? (
-    <Link to={to} className={className}>
+    <Link to={to} className="nav-link">
       {children}
     </Link>
   ) : null;
 };
 
 const Navbar = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   const username = localStorage.getItem("username");
@@ -25,46 +24,49 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <nav className="navbar">
-      <img src="logo.png" alt="Logo" className="logo" />
-      <h1 className="app-name">SS-Theme</h1>
+      <div className="nav-left">
+        <img src="logo.png" alt="Logo" className="logo" />
+        <h1 className="app-name">SS-Theme</h1>
+      </div>
       <div className="nav-links">
-        <Link to="/" className="home-link">
+        <Link to="/" className="nav-link">
           Home
         </Link>
         {username && (
-          <Link to={isAdmin ? "/admin" : "/user"} className="panel-link">
+          <Link to={isAdmin ? "/admin" : "/user"} className="nav-link">
             Panel
           </Link>
         )}
-        <AdminLink to={"/formpanel"} className="panel-link">
-          Form Panel
-        </AdminLink>
-        <AdminLink to={"/editform"} className="panel-link">
-          Edit Forms
-        </AdminLink>
+        <AdminLink to={"/formpanel"}>Form Panel</AdminLink>
+        <AdminLink to={"/editform"}>Edit Forms</AdminLink>
       </div>
-      <div className="right-content">
-        {!username && (
-          <>
-            {" "}
-            <Link to="/login" className="home-link">
-              Login
-            </Link>
-          </>
-        )}
-        {username && (
-          <>
-            <div className="user-info">
-              {(isAdmin ? "Admin: " : "User: ") + username}
+      {username && (
+        <div className="nav-right" onClick={toggleDropdown}>
+          <span className="user-info">
+            {(isAdmin ? "Admin: " : "User: ") + username}
+          </span>
+          {dropdownOpen && (
+            <div className="dropdown">
+              <button onClick={logout} className="logout-btn">
+                Logout
+              </button>
             </div>
-            <button onClick={logout} className="logout-btn">
-              Logout
-            </button>
-          </>
-        )}
-      </div>
+          )}
+        </div>
+      )}
+      {!username && (
+        <div className="nav-right">
+          <Link to="/login" className="nav-link login-link">
+            Login
+          </Link>
+        </div>
+      )}
     </nav>
   );
 };
