@@ -37,7 +37,8 @@ def login():
         user_data = ldap_authenticate(username, password)
         if user_data:
             # Add default answers to questions without answers
-            add_default_answers(username)
+            if user_data['ou'] == "User":
+                add_default_answers(username)
             # Generate a JWT token
             access_token = create_access_token(identity=user_data)
             return jsonify({'message': 'Authentication successful', 'access_token': access_token, 'user_data': user_data})
