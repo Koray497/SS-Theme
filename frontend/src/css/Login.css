@@ -4,7 +4,6 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    color: white;
   }
   
   h1 {
@@ -15,6 +14,7 @@
   .form-container {
     display: flex;
     flex-direction: column;
+    background-color: #9af19a; /* Replace with the color you want */
     width: 300px;
   }
   
