@@ -1,30 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, MenuItem, Typography, Select } from "@mui/material";
-import { styled } from "@mui/system";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Paper,
+  Select,
+  Typography,
+} from "@mui/material";
 import { toast } from "react-toastify";
 import QuestionInput from "../QuestionInput";
 import { v4 as uuidv4 } from "uuid";
-
-const CenteredContainer = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100vh",
-});
-
-const FormList = styled("ul")({
-  paddingLeft: 0,
-  marginTop: 0,
-  marginBottom: "1rem",
-  listStyleType: "none",
-});
-
-const FormListItem = styled("li")({
-  display: "flex",
-  alignItems: "center",
-  marginBottom: "0.5rem",
-});
 
 const EditForm = () => {
   const [forms, setForms] = useState([]);
@@ -145,57 +130,97 @@ const EditForm = () => {
   };
 
   return (
-    <CenteredContainer>
-      <Typography variant="h5" gutterBottom>
-        Edit Forms
-      </Typography>
-      <FormList>
-        <FormListItem>
-          <Select
-            value={selectedForm?.id || ""}
-            onChange={handleFormChange}
-            displayEmpty
-            inputProps={{ "aria-label": "Select a form" }}
-          >
-            <MenuItem value="" disabled>
-              Select a Form
-            </MenuItem>
-            {forms.map((form) => (
-              <MenuItem key={form.id} value={form.id}>
-                {form.formName}
-              </MenuItem>
-            ))}
-          </Select>
-          <Button
-            className="add-form"
-            variant="outlined"
-            onClick={() => deleteForm(selectedForm.id)}
-            size="small"
-            disabled={!selectedForm}
-          >
-            Delete
-          </Button>
-        </FormListItem>
-      </FormList>
-      <div>
-        <QuestionInput
-          questions={questions}
-          handleAddQuestion={addQuestion}
-          handleUpdateQuestion={updateQuestion}
-          handleDeleteQuestion={deleteQuestion}
-        />
-        <Button
-          className="add-form"
-          disabled={questions.length < 1}
-          variant="contained"
-          type="submit"
-          sx={{ marginTop: "1rem" }}
-          onClick={updateForm}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        maxWidth: "1025px",
+        margin: "0 auto",
+        height: "70vh",
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          display: "flex",
+          flexDirection: "column",
+          overflowY: "auto",
+          backgroundColor: "#aab382",
+          width: "100%",
+          maxWidth: "1025px",
+          margin: "0 auto",
+          height: "70vh",
+        }}
+      >
+        <Typography variant="h4" gutterBottom>
+          Edit Forms
+        </Typography>
+        <Box
+          component="ul"
+          sx={{
+            paddingLeft: 0,
+            marginTop: 0,
+            marginBottom: "1rem",
+            listStyleType: "none",
+          }}
         >
-          Update Form
-        </Button>
-      </div>
-    </CenteredContainer>
+          <Box
+            component="li"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <Select
+              value={selectedForm?.id || ""}
+              onChange={handleFormChange}
+              displayEmpty
+              inputProps={{ "aria-label": "Select a form" }}
+              sx={{ marginRight: 2 }}
+            >
+              <MenuItem value="" disabled>
+                Select a Form
+              </MenuItem>
+              {forms.map((form) => (
+                <MenuItem key={form.id} value={form.id}>
+                  {form.formName}
+                </MenuItem>
+              ))}
+            </Select>
+            <Button
+              variant="outlined"
+              onClick={() => deleteForm(selectedForm.id)}
+              size="small"
+              disabled={!selectedForm}
+            >
+              Delete
+            </Button>
+          </Box>
+        </Box>
+        <Box sx={{ marginTop: 2 }}>
+          <QuestionInput
+            questions={questions}
+            handleAddQuestion={addQuestion}
+            handleUpdateQuestion={updateQuestion}
+            handleDeleteQuestion={deleteQuestion}
+          />
+          <Button
+            disabled={questions.length < 1}
+            className="add-form"
+            variant="contained"
+            type="submit"
+            sx={{ marginTop: "1rem" }}
+            onClick={updateForm}
+          >
+            Update Form
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

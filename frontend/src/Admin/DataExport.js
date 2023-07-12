@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import { Box, Typography } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 
 const DownloadForms = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -54,31 +54,42 @@ const DownloadForms = () => {
     const jsonData = JSON.stringify(data, null, 2);
 
     // Set preview data
-    const lines = jsonData.split("\n").slice(0, 25).join("\n");
-    setPreviewData(lines);
+    setPreviewData(jsonData);
     setIsPreviewShown(true);
   };
 
   return (
-    <Box>
-      <Button variant="contained" onClick={downloadForms} disabled={isLoading}>
-        {isLoading ? "Downloading..." : "Download Form Data in JSON"}
-      </Button>
-      <Button
-        variant="contained"
-        onClick={showPreview}
-        disabled={isLoading}
-        style={{ marginLeft: "10px" }}
-      >
-        {isLoading ? "Fetching Preview..." : "Show Preview"}
-      </Button>
-      {isPreviewShown && (
-        <Typography
-          variant="body1"
-          style={{ whiteSpace: "pre-wrap", marginTop: "10px" }}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+        gap: 2,
+      }}
+    >
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Button
+          variant="contained"
+          onClick={downloadForms}
+          disabled={isLoading}
         >
-          {previewData}
-        </Typography>
+          {isLoading ? "Downloading..." : "Download Form Data in JSON"}
+        </Button>
+        <Button variant="contained" onClick={showPreview} disabled={isLoading}>
+          {isLoading ? "Fetching Preview..." : "Show Preview"}
+        </Button>
+      </Box>
+      {isPreviewShown && (
+        <TextField
+          multiline
+          rows={15} // adjust number of rows as needed
+          variant="outlined"
+          fullWidth
+          value={previewData}
+          InputProps={{ readOnly: true }}
+          sx={{ mt: 2 }}
+        />
       )}
     </Box>
   );

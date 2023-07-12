@@ -17,10 +17,16 @@ const UserActivities = () => {
         });
 
         const data = await response.json();
+        console.log(data);
 
         if (response.ok) {
+          // Sort the logs array in descending order based on the timestamp
+          const sortedLogs = data.sort(
+            (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+          );
+
           setLogs(
-            data.map((log, idx) => ({
+            sortedLogs.map((log, idx) => ({
               id: idx,
               username: log.username,
               activity: log.activity,

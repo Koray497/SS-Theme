@@ -22,7 +22,7 @@ const Admin = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ backgroundColor: "#aab382" }}>
       <Typography variant="h4">Admin Dashboard</Typography>
 
       <Tabs

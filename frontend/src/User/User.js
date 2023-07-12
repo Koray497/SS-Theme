@@ -115,7 +115,7 @@ const User = () => {
     e.preventDefault();
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
-  
+
     try {
       const response = await fetch(
         `http://127.0.0.1:5000/api/forms/${selectedForm.id}/responses`,
@@ -128,11 +128,16 @@ const User = () => {
           body: JSON.stringify(answers),
         }
       );
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        await logActivity(username, `Submitted a form with id: ${selectedForm.id}`);
+        // Determine action based on 'updating' state
+        const action = updating ? "Updated" : "Submitted";
+        await logActivity(
+          username,
+          `${action} response to "${selectedForm.formName}"`
+        );
         toast.success(data.msg);
         setTimeout(() => {
           window.location.href = "/User";
@@ -144,20 +149,22 @@ const User = () => {
       toast.error("There was an error filling the form");
     }
   };
-  
 
   const logActivity = async (username, activity) => {
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch("http://127.0.0.1:5000/api/users/log_activity", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ username, activity }),
-      });
-  
+      const response = await fetch(
+        "http://127.0.0.1:5000/api/users/log_activity",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ username, activity }),
+        }
+      );
+
       if (!response.ok) {
         console.error("Activity logging failed:", await response.json());
       }
@@ -165,7 +172,6 @@ const User = () => {
       console.error("Error:", error);
     }
   };
-  
 
   return (
     <Box
@@ -179,7 +185,7 @@ const User = () => {
     >
       <Paper
         elevation={3}
-        sx={{ p: 4, backgroundColor: "white", width: "80vw", maxWidth: 800 }}
+        sx={{ p: 4, backgroundColor: "#fdf0a8", width: "80vw", maxWidth: 800 }}
       >
         <Typography
           variant="h4"

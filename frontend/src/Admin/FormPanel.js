@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-import { Button, FormControl, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Box,
+  Button,
+  FormControl,
+  TextField,
+  Paper,
+  Typography,
+} from "@mui/material";
 import QuestionInput from "../QuestionInput";
 import { toast } from "react-toastify";
 
@@ -60,40 +66,69 @@ const FormPanel = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: "0 auto", marginTop: "5rem" }}>
-      <Typography variant="h4" sx={{ marginBottom: "1rem" }}>
-        Create Form
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
-          <TextField
-            id="form-name"
-            value={formName}
-            onChange={(e) => setFormName(e.target.value)}
-            required
-            label="Form Name"
-            fullWidth
-            margin="normal"
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        maxWidth: "1025px",
+        margin: "0 auto",
+        height: "70vh",
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 3,
+          backgroundColor: "#aab382",
+          width: "100%",
+          maxWidth: "1025px",
+          margin: "0 auto",
+          height: "70vh",
+          overflowY: "auto",
+        }}
+      >
+        <Typography variant="h4" sx={{ marginBottom: "1rem" }}>
+          Create Form
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <FormControl fullWidth sx={{ marginBottom: "1rem" }}>
+            <TextField
+              id="form-name"
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+              required
+              label="Form Name"
+              inputProps={{ style: { border: "none" } }}
+              InputProps={{
+                sx: {
+                  fontSize: "1.2rem",
+                  paddingTop: "0.6rem",
+                  paddingBottom: "0.6rem",
+                },
+              }}
+            />
+          </FormControl>
+
+          <QuestionInput
+            questions={questions}
+            handleAddQuestion={addQuestion}
+            handleUpdateQuestion={updateQuestion}
+            handleDeleteQuestion={deleteQuestion}
           />
-        </FormControl>
 
-        <QuestionInput
-          questions={questions}
-          handleAddQuestion={addQuestion}
-          handleUpdateQuestion={updateQuestion}
-          handleDeleteQuestion={deleteQuestion}
-        />
-
-        <Button
-          className="add-form"
-          disabled={questions.length < 1}
-          variant="contained"
-          type="submit"
-          sx={{ marginTop: "1rem" }}
-        >
-          Save Form
-        </Button>
-      </form>
+          <Button
+            className="add-form"
+            disabled={questions.length < 1}
+            variant="contained"
+            type="submit"
+            sx={{ marginTop: "1rem" }}
+          >
+            Save Form
+          </Button>
+        </form>
+      </Paper>
     </Box>
   );
 };

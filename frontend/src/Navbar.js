@@ -11,13 +11,37 @@ const AdminLink = ({ to, children }) => {
   ) : null;
 };
 
+const logActivity = async (username, activity) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:5000/api/users/log_activity",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ username, activity }),
+      }
+    );
+
+    if (!response.ok) {
+      console.error("Activity logging failed:", await response.json());
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const isAdmin = localStorage.getItem("isAdmin") === "true";
   const username = localStorage.getItem("username");
 
-  const logout = () => {
+  const logout = async () => {
+    await logActivity(username, "logged out");
     ["token", "isAdmin", "username", "isToastShown"].forEach((item) =>
       localStorage.removeItem(item)
     );

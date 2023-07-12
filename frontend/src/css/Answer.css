@@ -10,8 +10,8 @@
   }
   
   .answers__content {
-    max-height: 35vh; /* Adjust this value based on your needs */
-    overflow-y: auto; /* This will make your answers container scrollable */
+    max-height: 35vh;
+    overflow-y: auto;
   }
   
   .answer-card {

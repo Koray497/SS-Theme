@@ -7,10 +7,11 @@
   max-width: 1025px;  /* Increase this value to set a larger maximum width for the container */
   margin: 0 auto;
   height: 70vh;
-  background-color: #9af19a; /* Replace with the color you want */
+  background-color: #aab382; /* Replace with the color you want */
   border-radius: 4px;
   padding: 16px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .container h4 {
