@@ -33,7 +33,8 @@
 
 .nav-link {
   margin-right: 40px;
-  padding: 10px 20px;  /* Add padding to increase button size */
+  padding: 20px 50px;  /* Add padding to increase button size */
+  font-size:xx-large;
   color: white;
   text-decoration: none;
   transition: color 0.3s;
