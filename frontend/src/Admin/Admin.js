@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import UserActivities from './UserActivities.js';
-import Answers from './Answer.js';
-import DataExport from './DataExport.js';
-import '../css/Admin.css';
+import React, { useState } from "react";
+import { Tab, Tabs, Typography } from "@mui/material";
+import UserActivities from "./UserActivities";
+import Answers from "./Answer";
+import DataExport from "./DataExport";
+import "../css/Admin.css";
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState("UserActivities");
+  const [activeTab, setActiveTab] = useState(0);
 
   const renderActiveTab = () => {
-    switch(activeTab) {
-      case 'UserActivities':
+    switch (activeTab) {
+      case 0:
         return <UserActivities />;
-      case 'Answers':
+      case 1:
         return <Answers />;
-      case 'DataExport':
+      case 2:
         return <DataExport />;
       default:
         return null;
@@ -22,16 +23,19 @@ const Admin = () => {
 
   return (
     <div className="container">
-      <div className="sidebar">
-        <ul>
-        <li><span role="button" onClick={() => setActiveTab("UserActivities")} >User Activities</span></li>
-        <li><span role="button" onClick={() => setActiveTab("Answers")} >Answer Management</span></li>
-        <li><span role="button" onClick={() => setActiveTab("DataExport")} >Data Export</span></li>
-        </ul>
-      </div>
-      <div className="active-tab">
-        {renderActiveTab()}
-      </div>
+      <Typography variant="h4">Admin Dashboard</Typography>
+
+      <Tabs
+        value={activeTab}
+        onChange={(e, newValue) => setActiveTab(newValue)}
+        centered
+      >
+        <Tab label="User Activities" />
+        <Tab label="Answer Management" />
+        <Tab label="Data Export" />
+      </Tabs>
+
+      <div className="content">{renderActiveTab()}</div>
     </div>
   );
 };
