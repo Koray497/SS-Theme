@@ -50,7 +50,7 @@ def add_default_answers(username):
                 }
                 question['answers'].append(default_answer_doc)
 
-                # Update the form in the database with the new answer
+                
                 forms_collection.update_one(
                     {'_id': form['_id']},
                     {'$push': {'formQuestions.$[question].answers': default_answer_doc}},
@@ -86,7 +86,6 @@ def ldap_authenticate(username, password):
                 'email': str(attributes.get('mail', [b''])[0], 'utf-8'),
                 'full_name': str(attributes.get('cn', [b''])[0], 'utf-8'),
                 'ou': extract_ou_from_dn(dn)
-                # Add more attributes as needed
             }
 
             # Convert bytes to base64-encoded strings

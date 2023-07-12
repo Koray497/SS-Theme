@@ -15,7 +15,6 @@ logs_collection = db['logs']
 
 user_blueprint = Blueprint('user', __name__)
 
-### swagger specific ###
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.json'
 SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
@@ -25,7 +24,6 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
         'app_name': "SS-Theme Api Test"
     }
 )
-### end swagger specific ###
 
 
 @user_blueprint.route('/login', methods=['POST'])
@@ -37,10 +35,9 @@ def login():
     if username and password:
         user_data = ldap_authenticate(username, password)
         if user_data:
-            # Add default answers to questions without answers
             if user_data['ou'] == "User":
                 add_default_answers(username)
-            # Generate a JWT token
+            
             access_token = create_access_token(identity=user_data)
             log_activity(username, 'logged in')
             return jsonify({'message': 'Authentication successful', 'access_token': access_token, 'user_data': user_data})

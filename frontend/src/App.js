@@ -14,7 +14,6 @@ import Navbar from "./Navbar.js";
 import Login from "./User/Login.js";
 import FormPanel from "./Admin/FormPanel.js";
 import EditForm from "./Admin/EditForm.js";
-import Answers from "./Admin/Answer.js";
 
 function AdminRoute() {
   const isAdmin = localStorage.getItem("isAdmin") === "true";
@@ -31,10 +30,6 @@ function EditRoute() {
   return isAdmin ? <EditForm /> : <Navigate to="/" />;
 }
 
-function AnswerRoute() {
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
-  return isAdmin ? <Answers /> : <Navigate to="/" />;
-}
 
 function App() {
   return (
@@ -48,7 +43,6 @@ function App() {
           <Route path="/admin" element={<AdminRoute />} />
           <Route path="/formpanel" element={<FormRoute />} />
           <Route path="/editform" element={<EditRoute />} />
-          <Route path="/answers" element={<AnswerRoute />} />
           <Route path="/user" element={<User />} />
         </Routes>
       </Router>
