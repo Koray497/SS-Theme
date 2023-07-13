@@ -141,6 +141,14 @@ const QuestionInput = ({
                     setOptionsInput(updatedOptions);
                   }}
                   fullWidth
+                  inputProps={{ style: { border: "none" } }}
+                  InputProps={{
+                    sx: {
+                      fontSize: "1.2rem",
+                      paddingTop: "0.6rem",
+                      paddingBottom: "0.6rem",
+                    },
+                  }}
                 />
                 <Button
                   className="add-form"
@@ -159,6 +167,14 @@ const QuestionInput = ({
             onChange={(e) => setOptionInput(e.target.value)}
             fullWidth
             margin="normal"
+            inputProps={{ style: { border: "none" } }}
+            InputProps={{
+              sx: {
+                fontSize: "1.2rem",
+                paddingTop: "0.6rem",
+                paddingBottom: "0.6rem",
+              },
+            }}
           />
           <Button
             className="add-form"
