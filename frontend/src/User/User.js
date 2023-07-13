@@ -24,13 +24,16 @@ const User = () => {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/forms/getall", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URI}/api/forms/getall`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
 
@@ -118,7 +121,7 @@ const User = () => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/api/forms/${selectedForm.id}/responses`,
+        `${process.env.REACT_APP_API_URI}/api/forms/${selectedForm.id}/responses`,
         {
           method: "POST",
           headers: {
@@ -154,7 +157,7 @@ const User = () => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        "http://127.0.0.1:5000/api/users/log_activity",
+        `${process.env.REACT_APP_API_URI}/api/users/log_activity`,
         {
           method: "POST",
           headers: {

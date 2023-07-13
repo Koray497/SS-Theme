@@ -29,13 +29,16 @@ const EditForm = () => {
 
   const fetchForms = async () => {
     const token = localStorage.getItem("token");
-    const response = await fetch("http://127.0.0.1:5000/api/forms/getall", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URI}/api/forms/getall`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const data = await response.json();
 
@@ -50,7 +53,7 @@ const EditForm = () => {
   const deleteForm = async (formId) => {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `http://127.0.0.1:5000/api/forms/delete/${formId}`,
+      `${process.env.REACT_APP_API_URI}/api/forms/delete/${formId}`,
       {
         method: "POST",
         headers: {
@@ -82,7 +85,7 @@ const EditForm = () => {
     delete updatedForm._id;
 
     const response = await fetch(
-      `http://127.0.0.1:5000/api/forms/${selectedForm.id}`,
+      `${process.env.REACT_APP_API_URI}/api/forms/${selectedForm.id}`,
       {
         method: "POST",
         headers: {

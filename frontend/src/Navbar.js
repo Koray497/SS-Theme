@@ -15,7 +15,7 @@ const logActivity = async (username, activity) => {
   const token = localStorage.getItem("token");
   try {
     const response = await fetch(
-      "http://127.0.0.1:5000/api/users/log_activity",
+      `${process.env.REACT_APP_API_URI}/api/users/log_activity`,
       {
         method: "POST",
         headers: {
