@@ -1,3 +1,4 @@
+import logging
 from jwt import decode, InvalidTokenError, ExpiredSignatureError
 from functools import wraps
 from flask import current_app
@@ -12,6 +13,10 @@ import uuid
 from datetime import datetime
 
 
+# Set up logging
+logging.basicConfig(filename='log_folder/logfile.log',
+                    level=logging.INFO, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 load_dotenv()
 
@@ -24,6 +29,7 @@ logs_collection = db['logs']
 def log_activity(username, activity):
     log = {"username": username, "activity": activity, "timestamp": datetime.utcnow()}
     logs_collection.insert_one(log)
+    logging.info(f"User {username} performed {activity} at {log['timestamp']}.")
 
 def extract_ou_from_dn(dn):
     ou_match = re.search(r'cn=[^,]+,ou=([^,]+)', dn)
